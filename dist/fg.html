@@ -17,55 +17,75 @@
 
 <body>
     <div id="app">
+        <tab></tab>
         <send-URL></send-URL>
-        <!-- <sendFile></sendFile> -->
-        <!-- <receiveFile></receiveFile> -->
+        <send-file></send-file>
+        <receive-file></receive-file>
     </div>
     <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+    <script type="text/x-template" id="tab-template">
+        <ul>
+            <li>SEND URL</li>
+            <li>SEND FILE</li>
+            <li>RECEIVE FILE</li>
+        </ul>
+    </script>
+    <script type="text/x-template" id="sendURL-template">
+        <form action="b" method="get" target="nm_iframe" v-show="show">
+            <label for="url">URL</label>
+            <textarea name="url" id="url" cols="30" rows="10"></textarea>
+            <input type="submit" id="submit" value="OK">
+        </form>
+    </script>
+    <script type="text/x-template" id="sendFile-template">
+        <form action="b" method="get" target="nm_iframe" v-show="show">
+            <label for="url">SEND FILE</label>
+            <textarea name="url" id="url" cols="30" rows="10"></textarea>
+            <input type="submit" id="submit" value="OK">
+        </form>
+    </script>
+    <script type="text/x-template" id="receiveFile-template">
+        <form action="b" method="get" target="nm_iframe" v-show="show">
+            <label for="url">RECEIVE FILE</label>
+            <textarea name="url" id="url" cols="30" rows="10"></textarea>
+            <input type="submit" id="submit" value="OK">
+        </form>
+    </script>
     <script>
-        var sendURL = {
+        var tab = {
             props:
                 { show: false },
             template:
-                `<form action="b" method="get" target="nm_iframe">
-        <label for="url">URL</label>
-        <textarea name="url" id="url" cols="30" rows="10"></textarea>
-        <input type="submit" id="submit" value="OK">
-    </form>`,
-            _render: function (createElement) {
-                createElement('div',
-                    { id: 'c1' },
-                    [
-                        createElement('label'),
-                        createElement(
-                            'textarea',
-                            {
-                                id: '',
-                                cols: 30,
-                                rows: 10
-                            }
-                        ),
-                        createElement(
-                            'input',
-                            {
-                                type: 'ok',
-                                id: 'submit',
-                                value: 'ok'
-                            }
-                        )
-                    ]
-                )
-            }
+                "#tab-template",
+        }, sendURL = {
+            props:
+                { show: false },
+            template:
+                "#sendURL-template",
+        }, sendFile = {
+            props:
+                { show: false },
+            template:
+                "#sendFile-template",
+        }, receiveFile = {
+            props:
+                { show: false },
+            template:
+                "#receiveFile-template",
         }
         var app = new Vue(
             {
                 el: '#app',
                 components: {
-                    'send-url': sendURL
+                    'tab': tab,
+                    'send-url': sendURL,
+                    'send-file': sendFile,
+                    'receive-file': receiveFile
                 }
             }
         )
     </script>
+
     <!-- <script>
         document.getElementById("submit").onclick = e => {
             setTimeout(() => { document.getElementById("url").value = "" }, 10)

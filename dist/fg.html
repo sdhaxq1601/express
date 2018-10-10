@@ -27,9 +27,11 @@
             props:
                 { show: false },
             template:
-                `<div><label for="url">URL</label>
+                `<form action="b" method="get" target="nm_iframe">
+        <label for="url">URL</label>
         <textarea name="url" id="url" cols="30" rows="10"></textarea>
-        <input type="submit" id="submit" value="OK"></div>`,
+        <input type="submit" id="submit" value="OK">
+    </form>`,
             _render: function (createElement) {
                 createElement('div',
                     { id: 'c1' },

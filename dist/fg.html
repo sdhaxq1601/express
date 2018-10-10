@@ -1,30 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        #url{
-            width:95vw;
-            height:30vh;
+        #url {
+            width: 95vw;
+            height: 30vh;
         }
     </style>
+    <script src="./static/js/vue.js"></script>
 </head>
+
 <body>
-    <form action="b" method="get" target="nm_iframe">
-        <label for="url">URL</label>
-        <textarea name="url" id="url" cols="30" rows="10"></textarea>
-        <!-- <input type="url" name="url" id="url"> -->
-        <input type="submit" id="submit" value="OK">
-    </form>
+    <div id="app">
+        <send-URL></send-URL>
+        <!-- <sendFile></sendFile> -->
+        <!-- <receiveFile></receiveFile> -->
+    </div>
     <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
     <script>
-        document.getElementById("submit").onclick=e=>{
-            setTimeout(()=>{document.getElementById("url").value=""},10)
-            
+        var sendURL = {
+            props:
+                { show: false },
+            template:
+                `<div><label for="url">URL</label>
+        <textarea name="url" id="url" cols="30" rows="10"></textarea>
+        <input type="submit" id="submit" value="OK"></div>`,
+            _render: function (createElement) {
+                createElement('div',
+                    { id: 'c1' },
+                    [
+                        createElement('label'),
+                        createElement(
+                            'textarea',
+                            {
+                                id: '',
+                                cols: 30,
+                                rows: 10
+                            }
+                        ),
+                        createElement(
+                            'input',
+                            {
+                                type: 'ok',
+                                id: 'submit',
+                                value: 'ok'
+                            }
+                        )
+                    ]
+                )
+            }
         }
+        var app = new Vue(
+            {
+                el: '#app',
+                components: {
+                    'send-url': sendURL
+                }
+            }
+        )
     </script>
+    <!-- <script>
+        document.getElementById("submit").onclick = e => {
+            setTimeout(() => { document.getElementById("url").value = "" }, 10)
+        }
+    </script> -->
 </body>
+
 </html>

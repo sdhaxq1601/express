@@ -6,7 +6,7 @@ var openBrowser = require('child_process');
 //openBrowser.exec('start http://www.baidu.com');
 // app.use(express.static(path.join(__dirname, '../Vue/Todolist/dist')))
 app.use(express.static('D:\\Node\\dist'))
-console.log(path.join(__dirname, '../Vue/Todolist/dist'))
+console.log(new Date())
 
 app.get('/b',function(req,res){
     var q=req.query

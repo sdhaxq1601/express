@@ -11,23 +11,43 @@
             width: 95vw;
             height: 30vh;
         }
+
+        .tab {
+            list-style: none;
+        }
+
+        .tab li {
+            box-sizing: border-box;
+            width: 32%;
+            height: 10vw;
+            padding: 3vw 0;
+            font-size: 4vw;
+            line-height: 4vw;
+            display: inline-block;
+            text-align: center;
+            background: #888;
+        }
+
+        .tab .active {
+            background: #9f9;
+        }
     </style>
     <script src="./static/js/vue.js"></script>
 </head>
 
 <body>
     <div id="app">
-        <tab></tab>
-        <send-URL></send-URL>
-        <send-file></send-file>
-        <receive-file></receive-file>
+        <tab :who="who" @changewho="handler"></tab>
+        <send-URL :show="who==1"></send-URL>
+        <send-file :show="who==2"></send-file>
+        <receive-file :show="who==3"></receive-file>
     </div>
     <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
     <script type="text/x-template" id="tab-template">
-        <ul>
-            <li>SEND URL</li>
-            <li>SEND FILE</li>
-            <li>RECEIVE FILE</li>
+        <ul class="tab" @click="click">
+            <li id=1 :class="{active:who==1}">SEND URL</li>
+            <li id=2 :class="{active:who==2}">SEND FILE</li>
+            <li id=3 :class="{active:who==3}">RECEIVE FILE</li>
         </ul>
     </script>
     <script type="text/x-template" id="sendURL-template">
@@ -38,9 +58,9 @@
         </form>
     </script>
     <script type="text/x-template" id="sendFile-template">
-        <form action="b" method="get" target="nm_iframe" v-show="show">
+        <form action="sf" method="post" target="nm_iframe" v-show="show">
             <label for="url">SEND FILE</label>
-            <textarea name="url" id="url" cols="30" rows="10"></textarea>
+            <input type="file" name="sfile" id="sfile">
             <input type="submit" id="submit" value="OK">
         </form>
     </script>
@@ -54,28 +74,42 @@
     <script>
         var tab = {
             props:
-                { show: false },
+                ['who'],
+            methods: {
+                click: function (e) {
+                    this.$emit('changewho', e.target.id)
+                }
+            },
             template:
                 "#tab-template",
         }, sendURL = {
             props:
-                { show: false },
+                ['show'],
             template:
                 "#sendURL-template",
         }, sendFile = {
             props:
-                { show: false },
+                ['show'],
             template:
                 "#sendFile-template",
         }, receiveFile = {
             props:
-                { show: false },
+                ['show'],
             template:
                 "#receiveFile-template",
         }
         var app = new Vue(
             {
                 el: '#app',
+                data: {
+                    who: 1
+                },
+                methods: {
+                    handler: function (v) {
+                        this.who = v
+                        console.log("@", v)
+                    }
+                },
                 components: {
                     'tab': tab,
                     'send-url': sendURL,

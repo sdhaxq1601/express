@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+        *{
+            padding:0;
+            margin:0;
+        }
         #url {
             width: 95vw;
             height: 30vh;
         }
+        .tab{
+            text-align: center;
+        }
 
-        .tab {
+        .tab ul{
             list-style: none;
+            display: inline-block;
         }
 
         .tab li {
             box-sizing: border-box;
-            width: 32%;
+            width: 32vw;
             height: 10vw;
             padding: 3vw 0;
             font-size: 4vw;
@@ -31,8 +38,14 @@
         .tab .active {
             background: #9f9;
         }
+        .rcvFile li{
+            background: #eee;
+            margin:5px 0;
+            padding:3vw;
+        }
     </style>
     <script src="./static/js/vue.js"></script>
+    <script src="./static/js/axios.js"></script>
 </head>
 
 <body>
@@ -40,36 +53,42 @@
         <tab :who="who" @changewho="handler"></tab>
         <send-URL :show="who==1"></send-URL>
         <send-file :show="who==2"></send-file>
-        <receive-file :show="who==3"></receive-file>
+        <receive-file :show="who==3" :files="files" ></receive-file>
     </div>
     <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
     <script type="text/x-template" id="tab-template">
-        <ul class="tab" @click="click">
-            <li id=1 :class="{active:who==1}">SEND URL</li>
-            <li id=2 :class="{active:who==2}">SEND FILE</li>
-            <li id=3 :class="{active:who==3}">RECEIVE FILE</li>
-        </ul>
+        <div class="tab">
+            <ul @click="click">
+                    <li id=1 :class="{active:who==1}">SEND URL</li>
+                    <li id=2 :class="{active:who==2}">SEND FILE</li>
+                    <li id=3 :class="{active:who==3}">RECEIVE FILE</li>
+            </ul>
+        </div>
     </script>
+    <!-- 发送url 模板 -->
     <script type="text/x-template" id="sendURL-template">
         <form action="b" method="get" target="nm_iframe" v-show="show">
             <label for="url">URL</label>
-            <textarea name="url" id="url" cols="30" rows="10"></textarea>
-            <input type="submit" id="submit" value="OK">
+            <textarea name="url" id="url" v-model="url" @keyup="fixUrl" @paste="fixUrl" cols="30" rows="10"></textarea>
+            <input type="submit" id="submit" value="OK" @click="url=''">
         </form>
     </script>
+    <!-- 发送文件 模板 -->
     <script type="text/x-template" id="sendFile-template">
-        <form action="sf" method="post" target="nm_iframe" v-show="show">
-            <label for="url">SEND FILE</label>
-            <input type="file" name="sfile" id="sfile">
+        <form action="file-upload" method="post" target="nm_iframe" enctype="multipart/form-data" v-show="show">
+            <label for="sendfile">SEND FILE</label>
+            <input type="file" name="sfile" multiple="multiple" id="sfile">
             <input type="submit" id="submit" value="OK">
         </form>
     </script>
+    <!-- 接收文件 模板 -->
     <script type="text/x-template" id="receiveFile-template">
-        <form action="b" method="get" target="nm_iframe" v-show="show">
-            <label for="url">RECEIVE FILE</label>
-            <textarea name="url" id="url" cols="30" rows="10"></textarea>
-            <input type="submit" id="submit" value="OK">
-        </form>
+        <div class="rcvFile" v-show="show">
+            <div>>></div>
+            <ul>
+                <li v-for="(fn,i) in files" :key="i" ><a :href="path+fn">{{fn}}</a></li>
+            </ul>
+        </div>
     </script>
     <script>
         var tab = {
@@ -82,19 +101,51 @@
             },
             template:
                 "#tab-template",
-        }, sendURL = {
+        }
+        var sendURL = {//接收url**************************************************
             props:
                 ['show'],
+            data:function(){
+                return {
+                    url:""
+                }
+            },
             template:
                 "#sendURL-template",
-        }, sendFile = {
+            methods:{
+                fixUrl(){
+                    /^.{0,5}:\/\//
+                    if(!/^http[s]{0,1}:\/\//.test(this.url)){
+                        this.url="http://"+this.url.replace(/^.{0,5}:\/\//g,'')
+                    }
+                },
+                log(){
+                    console.log(this.$data)
+                }
+            }
+        }
+        var sendFile = {//发送文件**************************************************
             props:
                 ['show'],
             template:
                 "#sendFile-template",
-        }, receiveFile = {
+        }
+        var receiveFile = {//接收文件**************************************************
             props:
-                ['show'],
+                ['show',
+                'files'
+            ],
+            data:function(){
+                return {
+                    path:'static/download/'
+                }
+            },
+            methods:{
+                
+            },
+            computed:{
+                
+            },
             template:
                 "#receiveFile-template",
         }
@@ -102,11 +153,12 @@
             {
                 el: '#app',
                 data: {
-                    who: 1
+                    who: 1,
+                    files:[]
                 },
                 methods: {
                     handler: function (v) {
-                        this.who = v
+                        if(v)this.who = v
                         console.log("@", v)
                     }
                 },
@@ -115,16 +167,21 @@
                     'send-url': sendURL,
                     'send-file': sendFile,
                     'receive-file': receiveFile
+                },
+                mounted:
+                    function(){
+                        var vm=this
+                        axios.get('getfilelist').then(function(v){
+                            console.log(v.data)
+                            console.log(vm.files)
+                            vm.files=v.data
+                        }).catch(function(err){
+                            //错误处理
+                        })
+                    
                 }
             }
         )
     </script>
-
-    <!-- <script>
-        document.getElementById("submit").onclick = e => {
-            setTimeout(() => { document.getElementById("url").value = "" }, 10)
-        }
-    </script> -->
 </body>
-
 </html>

@@ -1,10 +1,19 @@
 var express = require('express')
 var path =require('path')
+var multer=require('multer')
+// var upload=multer({dest:"dist/static/upload/"})
+var storage=multer.diskStorage({
+    destination:'dist/static/upload/',
+    filename:function(req,file,cb){
+        cb(null,file.originalname)
+    }
+})
+var upload=multer({storage})
+var dlPath="dist/static/download/"
+var fs=require('fs')
 var querystring=require('querystring')
 var app = express()
-var openBrowser = require('child_process');
-//openBrowser.exec('start http://www.baidu.com');
-// app.use(express.static(path.join(__dirname, '../Vue/Todolist/dist')))
+var openBrowser = require('child_process')
 app.use(express.static('D:\\Node\\dist'))
 console.log(new Date())
 
@@ -22,13 +31,19 @@ app.get('/b',function(req,res){
 })
 app.get('/a',function(req,res){
     res.sendFile('D:\\Node\\dist\\canvas2.html')
-    /* res.render('D:\\Vue\\Todolist\\dist\\canvas2.html',function(err, html){
-        res.send(html)
-    }) */
 })
 app.get('/fg',function(req,res){
     res.sendFile('D:\\Node\\dist\\fg.html')
 })
+app.get('/getFileList',function(req,res){
+    res.send(fs.readdirSync(dlPath))
+})
+
+app.post('/file-upload',upload.array("sfile"), function(req, res, next) {
+    console.log(req.body)
+    console.log(req.files)
+    res.send('fus')
+  })
 
 var server=app.listen(8091,function(){
     var host = server.address().address

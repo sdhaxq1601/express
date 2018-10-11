@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        *{
-            padding:0;
-            margin:0;
+        * {
+            padding: 0;
+            margin: 0;
         }
+
         #url {
             width: 95vw;
             height: 30vh;
         }
-        .tab{
+
+        .tab {
+            margin-top: 10vw;
             text-align: center;
         }
 
-        .tab ul{
+        .tab ul {
             list-style: none;
             display: inline-block;
         }
@@ -38,10 +42,11 @@
         .tab .active {
             background: #9f9;
         }
-        .rcvFile li{
+
+        .rcvFile li {
             background: #eee;
-            margin:5px 0;
-            padding:3vw;
+            margin: 5px 0;
+            padding: 3vw;
         }
     </style>
     <script src="./static/js/vue.js"></script>
@@ -51,11 +56,11 @@
 <body>
     <div id="app">
         <tab :who="who" @changewho="handler"></tab>
-        <send-URL :show="who==1"></send-URL>
+        <send-URL :show="who==1" :history="his"></send-URL>
         <send-file :show="who==2"></send-file>
-        <receive-file :show="who==3" :files="files" ></receive-file>
+        <receive-file :show="who==3" :files="files"></receive-file>
+        <iframe id="id_iframe" name="nm_iframe" style="display:none;" @load="getHistory"></iframe>
     </div>
-    <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
     <script type="text/x-template" id="tab-template">
         <div class="tab">
             <ul @click="click">
@@ -67,11 +72,16 @@
     </script>
     <!-- 发送url 模板 -->
     <script type="text/x-template" id="sendURL-template">
-        <form action="b" method="get" target="nm_iframe" v-show="show">
-            <label for="url">URL</label>
-            <textarea name="url" id="url" v-model="url" @keyup="fixUrl" @paste="fixUrl" cols="30" rows="10"></textarea>
-            <input type="submit" id="submit" value="OK" @click="url=''">
-        </form>
+        <div class="sURL" v-show="show">
+            <form action="b" method="get" target="nm_iframe">
+                <label for="url">URL</label>
+                <textarea name="url" id="url" v-model="url" @keyup="fixUrl" @paste="fixUrl" @keyup.enter="enterSubmit($event)" cols="30" rows="10"></textarea>
+                <!-- <input type="submit" id="submit" value="OK"> -->
+            </form>
+            <ul class="history">
+                <li v-for="(h,i) in history" :key="i">{{i+1}}<a :href="h.url">{{`${h.url}>>${new Date(h.time).toLocaleDateString()}`}}</a></li>
+            </ul>
+        </div>
     </script>
     <!-- 发送文件 模板 -->
     <script type="text/x-template" id="sendFile-template">
@@ -104,22 +114,29 @@
         }
         var sendURL = {//接收url**************************************************
             props:
-                ['show'],
-            data:function(){
+                ['show',
+                    'history'
+                ],
+            data: function () {
                 return {
-                    url:""
+                    url: ""
                 }
             },
             template:
                 "#sendURL-template",
-            methods:{
-                fixUrl(){
+            methods: {
+                fixUrl() {
                     /^.{0,5}:\/\//
-                    if(!/^http[s]{0,1}:\/\//.test(this.url)){
-                        this.url="http://"+this.url.replace(/^.{0,5}:\/\//g,'')
+                    if (!/^http[s]{0,1}:\/\//.test(this.url)) {
+                        this.url = "http://" + this.url.replace(/^.{0,5}:\/\//g, '')
                     }
                 },
-                log(){
+                enterSubmit(e) {
+                    console.log(e.target.parentElement)
+                    e.target.parentElement.submit()
+                    this.url = ''
+                },
+                log() {
                     console.log(this.$data)
                 }
             }
@@ -133,18 +150,18 @@
         var receiveFile = {//接收文件**************************************************
             props:
                 ['show',
-                'files'
-            ],
-            data:function(){
+                    'files'
+                ],
+            data: function () {
                 return {
-                    path:'static/download/'
+                    path: 'static/download/'
                 }
             },
-            methods:{
-                
+            methods: {
+
             },
-            computed:{
-                
+            computed: {
+
             },
             template:
                 "#receiveFile-template",
@@ -154,12 +171,24 @@
                 el: '#app',
                 data: {
                     who: 1,
-                    files:[]
+                    files: [],
+                    his: []
                 },
                 methods: {
                     handler: function (v) {
-                        if(v)this.who = v
+                        if (v) this.who = v
                         console.log("@", v)
+                    },
+                    getHistory() {
+                        console.log("history....")
+                        var vm = this
+                        axios.get('history').then(function (v) {
+                            console.log(v.data)
+                            console.log(vm.files)
+                            vm.his = v.data
+                        }).catch(function (err) {
+                            //错误处理
+                        })
                     }
                 },
                 components: {
@@ -169,19 +198,20 @@
                     'receive-file': receiveFile
                 },
                 mounted:
-                    function(){
-                        var vm=this
-                        axios.get('getfilelist').then(function(v){
+                    function () {
+                        var vm = this
+                        axios.get('getfilelist').then(function (v) {
                             console.log(v.data)
                             console.log(vm.files)
-                            vm.files=v.data
-                        }).catch(function(err){
+                            vm.files = v.data
+                        }).catch(function (err) {
                             //错误处理
                         })
-                    
-                }
+                        this.getHistory()
+                    }
             }
         )
     </script>
 </body>
+
 </html>

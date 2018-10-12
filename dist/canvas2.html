@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
@@ -6,112 +7,143 @@
     <meta name="theme-color" content="#001">
     <title>画画</title>
     <style>
-        *{margin:0;padding:0;border:0 solid #000;}
-    form{padding-top:3em;
-        padding-left:2em;}
-    input{color: #f0f0f0;
-        font-size: 10px;
-        font-size:1em;}
-    #f1{width:90px;
-      height:10px;
-      opacity:.1;}
-    #submit{font-size:0.8em;
-      opacity:.1;}
-    img{width:80%;}
-    .hide{display:none;}
-    #log{
-      color:#433;
-      position:fixed;
-      bottom:0;
-    }
-    .func{
-        position:fixed;
-        bottom:0;
-        right:0;
-        list-style: none;        
-    }
-    .func li{
-        display:inline-block;
-        background: #111;
-        opacity:0.8;
-        width:16vmin;
-        height:16vmin;
-        margin:2px;
-    }
-    #undo::before{
-        content:"";
-        position:absolute;
-        background: #8c8cef;
-        width:8vmin;
-        height:2vmin;
-        border-radius: 1vmin;
-        /* border:1px solid red; */
-        bottom: 32%;
-        left: 16%;
-        transform: translateX(-50%) rotate(45deg);
-    }
-    #undo::after{
-        content:"";
-        position:absolute;
-        background: #8c8cef;
-        width:8vmin;
-        height:2vmin;
-        border-radius: 1vmin;
-        /* border:1px solid red; */
-        top: 32%;
-        left: 16%;
-        transform: translateX(-50%) rotate(-45deg);
-    }
-    #redo::before{
-        content:"";
-        position:absolute;
-        background: #8cef8c;
-        width:8vmin;
-        height:2vmin;
-        border-radius: 1vmin;
-        /* border:1px solid red; */
-        top: 32%;
-        left: 50%;
-        transform: translateX(-50%) rotate(45deg);
-    }
-    #redo::after{
-        content:"";
-        position:absolute;
-        background: #8cef8c;
-        width:8vmin;
-        height:2vmin;
-        border-radius: 1vmin;
-        /* border:1px solid red; */
-        bottom: 32%;
-        left: 50%;
-        transform: translateX(-50%) rotate(-45deg);
-    }
-    #clear::before{
-        content:"";
-        position:absolute;
-        background: #88ccef;
-        width:16vmin;
-        height:2vmin;
-        border-radius: 1vmin;
-        /* border:1px solid red; */
-        top:50%;
-        transform: translateY(-50%) rotate(45deg);
-    }
-    #clear::after{
-        content:"";
-        position:absolute;
-        background: #88ccef;
-        width:16vmin;
-        height:2vmin;
-        border-radius: 1vmin;
-        /* border:1px solid red; */
-        top:50%;
-        transform: translateY(-50%) rotate(-45deg);
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0 solid #000;
+        }
+
+        form {
+            padding-top: 3em;
+            padding-left: 2em;
+        }
+
+        input {
+            color: #f0f0f0;
+            font-size: 10px;
+            font-size: 1em;
+        }
+
+        #f1 {
+            width: 90px;
+            height: 10px;
+            opacity: .1;
+        }
+
+        #submit {
+            font-size: 0.8em;
+            opacity: .1;
+        }
+
+        img {
+            width: 80%;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        #log {
+            color: #433;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .func {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            list-style: none;
+        }
+
+        .func li {
+            display: inline-block;
+            background: #111;
+            opacity: 0.8;
+            width: 16vmin;
+            height: 16vmin;
+            margin: 2px;
+        }
+
+        #undo::before {
+            content: "";
+            position: absolute;
+            background: #8c8cef;
+            width: 8vmin;
+            height: 2vmin;
+            border-radius: 1vmin;
+            /* border:1px solid red; */
+            bottom: 32%;
+            left: 16%;
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        #undo::after {
+            content: "";
+            position: absolute;
+            background: #8c8cef;
+            width: 8vmin;
+            height: 2vmin;
+            border-radius: 1vmin;
+            /* border:1px solid red; */
+            top: 32%;
+            left: 16%;
+            transform: translateX(-50%) rotate(-45deg);
+        }
+
+        #redo::before {
+            content: "";
+            position: absolute;
+            background: #8cef8c;
+            width: 8vmin;
+            height: 2vmin;
+            border-radius: 1vmin;
+            /* border:1px solid red; */
+            top: 32%;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        #redo::after {
+            content: "";
+            position: absolute;
+            background: #8cef8c;
+            width: 8vmin;
+            height: 2vmin;
+            border-radius: 1vmin;
+            /* border:1px solid red; */
+            bottom: 32%;
+            left: 50%;
+            transform: translateX(-50%) rotate(-45deg);
+        }
+
+        #clear::before {
+            content: "";
+            position: absolute;
+            background: #88ccef;
+            width: 16vmin;
+            height: 2vmin;
+            border-radius: 1vmin;
+            /* border:1px solid red; */
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        #clear::after {
+            content: "";
+            position: absolute;
+            background: #88ccef;
+            width: 16vmin;
+            height: 2vmin;
+            border-radius: 1vmin;
+            /* border:1px solid red; */
+            top: 50%;
+            transform: translateY(-50%) rotate(-45deg);
+        }
     </style>
 </head>
 
-<body> 
+<body>
     <div id='' class=''>
         <canvas id="can" width="360" height="360" style="background:#000;margin-top:0vh;">
         </canvas>
@@ -128,23 +160,31 @@
         let step = 0
         let lines = [], line = {}, points = []
         let color = "#fff", width = 2, isClear = false
-        let timeoutId
         const can = document.getElementById("can")
         can.width = window.innerWidth
         let winH = window.innerHeight
         let cx = can.getContext("2d")
         cx.strokeStyle = "#fff"
+        cx.fillStyle = "#fff"
         let func = document.getElementById("func")
         func.addEventListener('touchmove', (e) => { e.preventDefault() })
         let sx, sy
         let log, _log
-        let endTime = 0
-        let timer=false//定时器状态，当点击X按钮时，检查定时器状态。。。。
+        let endTime = 0//每次touchMove或touchEnd记录时间
+        let startTime=0//每次touchStart记录时间
+        let moved = false//是否有是否touchmove事件
+        let timeoutId, timeoutId2
+        let timer = false//定时器状态，当点击X按钮时，检查定时器状态。。。。
+        let timer2=false
         let undo, redo, clear
         const draw = l => {
             if (l.length < 2) return
             cx.lineWidth = l.width
             cx.strokeStyle = l.color
+            cx.fillStyle = l.color
+            cx.beginPath()
+            cx.arc(l.points[0].sx, l.points[0].sy, 1, 0, 2 * Math.PI)
+            cx.fill()
             cx.beginPath()
             cx.moveTo(l.points[0].sx, l.points[0].sy)
             l.points.slice(1).forEach(i => cx.lineTo(i.sx, i.sy))
@@ -165,25 +205,25 @@
             console.log(acts.slice(-1)[0])
             acts.slice(lastClearAct(acts, step) + 1, step).forEach(i => {
                 i.lines.forEach(l => draw(l))
-            })            
+            })
         }
         clear = () => {
-            if(timer){
+            if (timer) {
                 clearTimeout(timeoutId)
                 acts.push({ isClear, lines })
                 step++
                 lines = []
-                timer=false
+                timer = false
             }
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
-            if (acts[step-1] && acts[step-1].isClear || step==0) return
-            acts.splice(step,acts.length-step+1,{ isClear: true, lines: [] })
+            if (acts[step - 1] && acts[step - 1].isClear || step == 0) return
+            acts.splice(step, acts.length - step + 1, { isClear: true, lines: [] })
             step++
             log('clear')
         }
         window.onload = (e) => {
             can.height = window.innerHeight
-            cx.strokeStyle = "#fff"            
+            cx.strokeStyle = "#fff"
             _log = document.getElementById("log")
             log = (s) => {
                 _log.innerText = s + "_" + acts.length + "_" + step
@@ -191,31 +231,31 @@
             //log(window.outerHeight+" "+window.innerHeight)
             document.addEventListener('click', e => {
                 let id = e.target.id
-                if (id == "redo" && step < acts.length){
+                if (id == "redo" && step < acts.length) {
                     let i
-                    for(i=step;i<acts.length;i++){
-                        if(!acts[i].isClear){
-                            step=i;
+                    for (i = step; i < acts.length; i++) {
+                        if (!acts[i].isClear) {
+                            step = i;
                             break;
                         }
                     }
                     // console.log(i,acts.length)
-                    if(i===acts.length)return
+                    if (i === acts.length) return
                     redo()
                 }
-                if (id == "undo" && step > 0){
-                    if(step==1){
+                if (id == "undo" && step > 0) {
+                    if (step == 1) {
                         undo()
                         return
                     }
                     let i
-                    for(i=step;i>0;i--){
-                        if(acts[i-2] && !acts[i-2].isClear){
-                            step=i;
+                    for (i = step; i > 0; i--) {
+                        if (acts[i - 2] && !acts[i - 2].isClear) {
+                            step = i;
                             break;
                         }
                     }
-                    if(i===0)return
+                    if (i === 0) return
                     undo()
                 }
                 if (id == "clear") clear()
@@ -226,16 +266,29 @@
         window.onresize = (e) => {
             can.width = window.innerWidth
             can.height = window.innerHeight
+            cx.strokeStyle = "#fff"
+            cx.fillStyle = "#fff"
             undo()
             redo()
         }
         can.addEventListener("touchstart", (e) => {
+            moved = false
+            startTime=Date.now()
             log("touchstart")
             e.preventDefault();
             //log.innerText=`${can.offsetTop}=${can.clientTop+"S"}`
             // console.log(e.touches[0])
             clearTimeout(timeoutId)
-            timer=false
+            timeoutId2=true
+            setTimeout(()=>{
+                cx.fillStyle = "#fff"
+                cx.arc(sx, sy, (Date.now()-startTime)/100, 0, 2 * Math.PI)
+                cx.fill()
+            },100)
+            if (!moved) {
+                
+            }
+            timer = false
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
             if (new Date().getTime() - endTime > 1000) {
@@ -244,14 +297,22 @@
 
             }
             cx.lineWidth = 1
+            cx.fillStyle = "#fff"
             cx.beginPath()
+            // cx.arc(sx, sy, 1, 0, 2 * Math.PI)
+            // cx.fill()
             cx.moveTo(sx, sy)
             points = [{ sx, sy }]
         }, { passive: false })
 
         can.addEventListener("touchmove", (e) => {
-            endTime = new Date().getTime()
-            //log("touchmove")
+            moved = true
+            if(timeoutId2){
+                clearTimeout(timeoutId2)
+                timeoutId2=false
+            }
+            endTime = Date.now()
+            console.log("touchmove")
             //e.preventDefault();
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
@@ -266,18 +327,17 @@
 
         can.addEventListener("touchend", (e) => {
             endTime = new Date().getTime()
-            // console.log(e.touches[0])
-            cx.stroke()
+            // console.log(e.touches[0])            
             if (acts.length > step) {
                 acts = acts.slice(0, step)
             }
             lines.push({ points, color, width })
-            timer=true
+            timer = true
             timeoutId = setTimeout(() => {
                 acts.push({ isClear, lines })
                 step++
                 lines = []
-                timer=false
+                timer = false
                 log('TIMEOUT')
             }, 500);
             log("touchend")

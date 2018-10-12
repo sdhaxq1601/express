@@ -76,6 +76,7 @@
             <form action="b" method="get" target="nm_iframe">
                 <label for="url">URL</label>
                 <textarea name="url" id="url" v-model="url" @keyup="fixUrl" @paste="fixUrl" @keyup.enter="enterSubmit($event)" cols="30" rows="10"></textarea>
+                <label for="input1">Open in Browser:</label><input style="zoom:1.5;" type="checkbox" name="open" id="input1">
                 <!-- <input type="submit" id="submit" value="OK"> -->
             </form>
             <ul class="history">

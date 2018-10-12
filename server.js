@@ -21,7 +21,7 @@ console.log(new Date())
 app.get('/b', function(req, res) {
   var q = req.query
   var qs = querystring.stringify(q)
-  var { url, ...back } = q
+  var { url, open, ...back } = q
   qs = querystring.stringify(back)
   // res.send(qs+"<br>"+JSON.stringify(q))
   console.log(`_${q.url}${qs ? '&' + qs : ''}`)
@@ -32,7 +32,7 @@ app.get('/b', function(req, res) {
   res.send(`start ${url}`)
   history.push({ url, time: Date.now() })
   console.log(history)
-  openBrowser.exec(`start ${url}`)
+  if(open)openBrowser.exec(`start ${url}`)
 })
 app.get('/a', function(req, res) {
   res.sendFile('D:\\Node\\dist\\canvas2.html')

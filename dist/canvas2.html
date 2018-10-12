@@ -1,10 +1,10 @@
 <html>
-
 <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
     <meta name="msapplication-TileColor" content="#001">
     <meta name="theme-color" content="#001">
-    <title><%=n%></title>
+    <title>画画</title>
     <style>
         *{margin:0;padding:0;border:0 solid #000;}
     form{padding-top:3em;
@@ -139,6 +139,7 @@
         let sx, sy
         let log, _log
         let endTime = 0
+        let timer=false//定时器状态，当点击X按钮时，检查定时器状态。。。。
         let undo, redo, clear
         const draw = l => {
             if (l.length < 2) return
@@ -167,17 +168,22 @@
             })            
         }
         clear = () => {
-            if (acts[step - 1].isClear) return
-            step++
-            acts.push({ isClear: true, lines: [] })
-            log('clear')
+            if(timer){
+                clearTimeout(timeoutId)
+                acts.push({ isClear, lines })
+                step++
+                lines = []
+                timer=false
+            }
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
+            if (acts[step-1] && acts[step-1].isClear || step==0) return
+            acts.splice(step,acts.length-step+1,{ isClear: true, lines: [] })
+            step++
+            log('clear')
         }
         window.onload = (e) => {
             can.height = window.innerHeight
-            cx.strokeStyle = "#fff"
-            window.scrollTo(0, 1000)
-            //can.requestFullScreen()
+            cx.strokeStyle = "#fff"            
             _log = document.getElementById("log")
             log = (s) => {
                 _log.innerText = s + "_" + acts.length + "_" + step
@@ -193,14 +199,18 @@
                             break;
                         }
                     }
-                    console.log(i,acts.length)
+                    // console.log(i,acts.length)
                     if(i===acts.length)return
                     redo()
                 }
                 if (id == "undo" && step > 0){
+                    if(step==1){
+                        undo()
+                        return
+                    }
                     let i
                     for(i=step;i>0;i--){
-                        if(!acts[i-2].isClear){
+                        if(acts[i-2] && !acts[i-2].isClear){
                             step=i;
                             break;
                         }
@@ -209,7 +219,7 @@
                     undo()
                 }
                 if (id == "clear") clear()
-                console.log(e.target)
+                console.log(acts)
             })
         }
 
@@ -223,8 +233,9 @@
             log("touchstart")
             e.preventDefault();
             //log.innerText=`${can.offsetTop}=${can.clientTop+"S"}`
-            console.log(e.touches[0])
+            // console.log(e.touches[0])
             clearTimeout(timeoutId)
+            timer=false
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
             if (new Date().getTime() - endTime > 1000) {
@@ -255,16 +266,18 @@
 
         can.addEventListener("touchend", (e) => {
             endTime = new Date().getTime()
-            console.log(e.touches[0])
+            // console.log(e.touches[0])
             cx.stroke()
             if (acts.length > step) {
-                acts = acts.splice(0, step)
+                acts = acts.slice(0, step)
             }
             lines.push({ points, color, width })
+            timer=true
             timeoutId = setTimeout(() => {
                 acts.push({ isClear, lines })
                 step++
                 lines = []
+                timer=false
                 log('TIMEOUT')
             }, 500);
             log("touchend")

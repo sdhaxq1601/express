@@ -171,19 +171,19 @@
         let sx, sy
         let log, _log
         let endTime = 0//每次touchMove或touchEnd记录时间
-        let startTime=0//每次touchStart记录时间
+        let startTime = 0//每次touchStart记录时间
         let moved = false//是否有是否touchmove事件
         let timeoutId, timeoutId2
         let timer = false//定时器状态，当点击X按钮时，检查定时器状态。。。。
-        let timer2=false
+        let timer2 = false
         let undo, redo, clear
         const draw = l => {
             if (l.length < 2) return
-            cx.lineWidth = l.width
+            cx.lineWidth = l.width * 1.2
             cx.strokeStyle = l.color
             cx.fillStyle = l.color
             cx.beginPath()
-            cx.arc(l.points[0].sx, l.points[0].sy, 1, 0, 2 * Math.PI)
+            cx.arc(l.points[0].sx, l.points[0].sy, l.width / 2, 0, 2 * Math.PI)
             cx.fill()
             cx.beginPath()
             cx.moveTo(l.points[0].sx, l.points[0].sy)
@@ -273,21 +273,20 @@
         }
         can.addEventListener("touchstart", (e) => {
             moved = false
-            startTime=Date.now()
+            startTime = Date.now()
             log("touchstart")
             e.preventDefault();
             //log.innerText=`${can.offsetTop}=${can.clientTop+"S"}`
             // console.log(e.touches[0])
             clearTimeout(timeoutId)
-            timeoutId2=true
-            setTimeout(()=>{
+            timer2 = true
+            timeoutId2 = setInterval(() => {
+                width = (Date.now() - startTime) / 50
                 cx.fillStyle = "#fff"
-                cx.arc(sx, sy, (Date.now()-startTime)/100, 0, 2 * Math.PI)
+                cx.lineWidth = width
+                cx.arc(sx, sy, width / 2, 0, 2 * Math.PI)
                 cx.fill()
-            },100)
-            if (!moved) {
-                
-            }
+            }, 10)
             timer = false
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
@@ -307,9 +306,9 @@
 
         can.addEventListener("touchmove", (e) => {
             moved = true
-            if(timeoutId2){
-                clearTimeout(timeoutId2)
-                timeoutId2=false
+            if (timer2) {
+                clearInterval(timeoutId2)
+                timer2 = false
             }
             endTime = Date.now()
             console.log("touchmove")
@@ -327,7 +326,11 @@
 
         can.addEventListener("touchend", (e) => {
             endTime = new Date().getTime()
-            // console.log(e.touches[0])            
+            // console.log(e.touches[0])  
+            if (timer2) {
+                clearInterval(timeoutId2)
+                timer2 = false
+            }
             if (acts.length > step) {
                 acts = acts.slice(0, step)
             }

@@ -24,8 +24,6 @@ var sendURL = {
     template: '#sendURL-template',
     methods: {
         fixUrl: function () {
-            ;
-            /^.{0,5}:\/\//;
             if (!/^http[s]{0,1}:\/\//.test(this.url)) {
                 this.url = 'http://' + this.url.replace(/^.{0,5}:\/\//g, '');
             }
@@ -43,7 +41,11 @@ var sendURL = {
 var sendFile = {
     //发送文件**************************************************
     props: ['show'],
-    template: '#sendFile-template'
+    data: function () {
+        return {};
+    },
+    template: '#sendFile-template',
+    methods: {}
 };
 var receiveFile = {
     //接收文件**************************************************
@@ -82,6 +84,10 @@ var app = new Vue({
             })["catch"](function (err) {
                 //错误处理
             });
+        },
+        clearInput: function () {
+            var obj = document.getElementById('sfile');
+            obj.outerHTML = obj.outerHTML;
         }
     },
     components: {

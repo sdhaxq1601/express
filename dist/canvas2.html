@@ -47,6 +47,7 @@
             color: #433;
             position: fixed;
             bottom: 0;
+            left: 8vw;
         }
 
         .func {
@@ -54,6 +55,21 @@
             bottom: 0;
             right: 0;
             list-style: none;
+        }
+
+        .func2 {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            list-style: none;
+            width: 8vw;
+            min-height: 8vw;
+            background: linear-gradient(#f00, #0ff, #00f, #ff0, #0f0, #f0f);
+        }
+
+        .color li {
+            width: 8vw;
+            height: 8vw;
         }
 
         .func li {
@@ -154,18 +170,39 @@
                 <li id='clear'></li>
             </ul>
         </div>
+        <div class="func2" id="func2">
+            <ul class="color">
+                <li id="col0" style="background:#ED1C24;"></li>
+                <li id="col1" style="background:#FF7F27;"></li>
+                <li id="col2" style="background:#FFF200;"></li>
+                <li id="col3" style="background:#22B14C;"></li>
+                <li id="col4" style="background:#00A2E8;"></li>
+                <li id="col5" style="background:#3F48CC;"></li>
+                <li id="col6" style="background:#A349A4;"></li>
+                <li id="col7" style="background:#FFFFFF;"></li>
+            </ul>
+        </div>
     </div>
     <script>
-        let acts = []//record every action line count, asyn with step
+        let acts = []//record every action line count
         let step = 0
         let lines = [], line = {}, points = []
         let color = "#fff", width = 2, isClear = false
+        let userColor = ['#ED1C24',
+            '#FF7F27',
+            '#FFF200',
+            '#22B14C',
+            '#00A2E8',
+            '#3F48CC',
+            '#A349A4',
+            '#FFFFFF']
+        let colorBox = document.getElementById('func2')
         const can = document.getElementById("can")
         can.width = window.innerWidth
         let winH = window.innerHeight
         let cx = can.getContext("2d")
-        cx.strokeStyle = "#fff"
-        cx.fillStyle = "#fff"
+        cx.strokeStyle = color
+        cx.fillStyle = color
         let func = document.getElementById("func")
         func.addEventListener('touchmove', (e) => { e.preventDefault() })
         let sx, sy
@@ -229,6 +266,20 @@
                 _log.innerText = s + "_" + acts.length + "_" + step
             }
             //log(window.outerHeight+" "+window.innerHeight)
+            if (!colorBox) colorBox = document.getElementById('func2')
+            colorBox.addEventListener('click', e => {
+                console.log(e.target.id)
+                let tarId = e.target.id
+                if (/^col[0-9]$/.test(tarId)) {
+                    console.log("fffff")
+                    color = userColor[tarId.slice(-1)]
+                    cx.strokeStyle = color
+                    cx.fillStyle = color
+                    colorBox.querySelectorAll(".color")[0].style.display = "none"
+                } else if (tarId === "func2") {
+                    colorBox.querySelectorAll(".color")[0].style.display = "block"
+                }
+            })
             document.addEventListener('click', e => {
                 let id = e.target.id
                 if (id == "redo" && step < acts.length) {
@@ -266,8 +317,8 @@
         window.onresize = (e) => {
             can.width = window.innerWidth
             can.height = window.innerHeight
-            cx.strokeStyle = "#fff"
-            cx.fillStyle = "#fff"
+            cx.strokeStyle = color
+            cx.fillStyle = color
             undo()
             redo()
         }
@@ -279,24 +330,18 @@
             //log.innerText=`${can.offsetTop}=${can.clientTop+"S"}`
             // console.log(e.touches[0])
             clearTimeout(timeoutId)
+            if (timer2) clearInterval(timeoutId2)
             timer2 = true
             timeoutId2 = setInterval(() => {
                 width = (Date.now() - startTime) / 50
-                cx.fillStyle = "#fff"
-                cx.lineWidth = width
+                cx.fillStyle = color
+                cx.lineWidth = 0
                 cx.arc(sx, sy, width / 2, 0, 2 * Math.PI)
                 cx.fill()
             }, 10)
             timer = false
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
-            if (new Date().getTime() - endTime > 1000) {
-
-            } else {
-
-            }
-            cx.lineWidth = 1
-            cx.fillStyle = "#fff"
             cx.beginPath()
             // cx.arc(sx, sy, 1, 0, 2 * Math.PI)
             // cx.fill()
@@ -309,6 +354,7 @@
             if (timer2) {
                 clearInterval(timeoutId2)
                 timer2 = false
+                cx.lineWidth = width
             }
             endTime = Date.now()
             console.log("touchmove")
@@ -330,6 +376,7 @@
             if (timer2) {
                 clearInterval(timeoutId2)
                 timer2 = false
+                cx.lineWidth = width
             }
             if (acts.length > step) {
                 acts = acts.slice(0, step)

@@ -59,6 +59,7 @@
         <send-file :show="who==2"></send-file>
         <receive-file :show="who==3" :files="files"></receive-file>
         <iframe id="id_iframe" name="nm_iframe" style="display:none;" @load="getHistory"></iframe>
+        <iframe id="id_iframe2" name="nm_iframe2" style="display:none;" @load="clearInput"></iframe>
     </div>
     <script type="text/x-template" id="tab-template">
         <div class="tab">
@@ -74,7 +75,11 @@
         <div class="sURL" v-show="show">
             <form action="b" method="get" target="nm_iframe">
                 <label for="url">URL</label>
-                <textarea name="url" id="url" v-model="url" @keyup="fixUrl" @paste="fixUrl" @keyup.enter="enterSubmit($event)" cols="30" rows="10"></textarea>
+                <textarea name="url" 
+                id="url" v-model="url" 
+                @keyup="fixUrl" 
+                @paste="fixUrl" 
+                @keyup.enter="enterSubmit($event)" cols="30" rows="10"></textarea>
                 <label for="input1">Open in Browser:</label><input style="zoom:1.5;" type="checkbox" name="open" id="input1">
                 <!-- <input type="submit" id="submit" value="OK"> -->
             </form>
@@ -85,10 +90,13 @@
     </script>
     <!-- 发送文件 模板 -->
     <script type="text/x-template" id="sendFile-template">
-        <form action="file-upload" method="post" target="nm_iframe" enctype="multipart/form-data" v-show="show">
+        <form action="file-upload" 
+        method="post" target="nm_iframe2" 
+        enctype="multipart/form-data" 
+        v-show="show">
             <label for="sendfile">SEND FILE</label>
             <input type="file" name="sfile" multiple="multiple" id="sfile">
-            <input type="submit" id="submit" value="OK">
+            <input type="submit" id="submit" value="OK" >
         </form>
     </script>
     <!-- 接收文件 模板 -->

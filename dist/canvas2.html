@@ -216,7 +216,7 @@
         let undo, redo, clear
         const draw = l => {
             if (l.length < 2) return
-            cx.lineWidth = l.width * 1.2
+            cx.lineWidth = l.width
             cx.strokeStyle = l.color
             cx.fillStyle = l.color
             cx.beginPath()
@@ -271,7 +271,6 @@
                 console.log(e.target.id)
                 let tarId = e.target.id
                 if (/^col[0-9]$/.test(tarId)) {
-                    console.log("fffff")
                     color = userColor[tarId.slice(-1)]
                     cx.strokeStyle = color
                     cx.fillStyle = color
@@ -290,7 +289,6 @@
                             break;
                         }
                     }
-                    // console.log(i,acts.length)
                     if (i === acts.length) return
                     redo()
                 }
@@ -330,21 +328,21 @@
             //log.innerText=`${can.offsetTop}=${can.clientTop+"S"}`
             // console.log(e.touches[0])
             clearTimeout(timeoutId)
+            sx = e.touches[0].pageX - can.offsetLeft
+            sy = e.touches[0].pageY - can.offsetTop
             if (timer2) clearInterval(timeoutId2)
             timer2 = true
             timeoutId2 = setInterval(() => {
                 width = (Date.now() - startTime) / 50
                 cx.fillStyle = color
-                cx.lineWidth = 0
+                cx.lineWidth = width
                 cx.arc(sx, sy, width / 2, 0, 2 * Math.PI)
                 cx.fill()
             }, 10)
             timer = false
-            sx = e.touches[0].pageX - can.offsetLeft
-            sy = e.touches[0].pageY - can.offsetTop
+            cx.lineWidth = width
+            // cx.fillStyle = color
             cx.beginPath()
-            // cx.arc(sx, sy, 1, 0, 2 * Math.PI)
-            // cx.fill()
             cx.moveTo(sx, sy)
             points = [{ sx, sy }]
         }, { passive: false })

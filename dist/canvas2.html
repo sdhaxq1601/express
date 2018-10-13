@@ -179,7 +179,7 @@
         let undo, redo, clear
         const draw = l => {
             if (l.length < 2) return
-            cx.lineWidth = l.width * 1.2
+            cx.lineWidth = l.width
             cx.strokeStyle = l.color
             cx.fillStyle = l.color
             cx.beginPath()
@@ -279,22 +279,18 @@
             //log.innerText=`${can.offsetTop}=${can.clientTop+"S"}`
             // console.log(e.touches[0])
             clearTimeout(timeoutId)
+            sx = e.touches[0].pageX - can.offsetLeft
+            sy = e.touches[0].pageY - can.offsetTop
+            if(timer2)clearInterval(timeoutId2)
             timer2 = true
             timeoutId2 = setInterval(() => {
                 width = (Date.now() - startTime) / 50
                 cx.fillStyle = "#fff"
                 cx.lineWidth = width
-                cx.arc(sx, sy, width / 2, 0, 2 * Math.PI)
+                cx.arc(sx, sy, width / 4, 0, 2 * Math.PI)
                 cx.fill()
             }, 10)
             timer = false
-            sx = e.touches[0].pageX - can.offsetLeft
-            sy = e.touches[0].pageY - can.offsetTop
-            if (new Date().getTime() - endTime > 1000) {
-
-            } else {
-
-            }
             cx.lineWidth = 1
             cx.fillStyle = "#fff"
             cx.beginPath()

@@ -30,9 +30,11 @@ app.get('/b', function(req, res) {
     .replace(/\s/g, '')
   //console.log(url)
   res.send(`start ${url}`)
+  if(url){
   history.push({ url, time: Date.now() })
   console.log(history)
   if(open)openBrowser.exec(`start ${url}`)
+  }
 })
 app.get('/a', function(req, res) {
   res.sendFile('D:\\Node\\dist\\canvas2.html')

@@ -206,7 +206,14 @@
         let func = document.getElementById("func")
         func.addEventListener('touchmove', (e) => { e.preventDefault() })
         let sx, sy
-        let log, _log
+        let  _log
+        let log = (s) => {
+                if(_log){
+                    _log.innerText = s + "_" + acts.length + "_" + step
+                }else{
+                    console.log("_log is undefined")
+                }
+            }
         let endTime = 0//每次touchMove或touchEnd记录时间
         let startTime = 0//每次touchStart记录时间
         let moved = false//是否有是否touchmove事件
@@ -234,6 +241,7 @@
             acts.slice(lastClearAct(acts, step) + 1, step).forEach(i => {
                 i.lines.forEach(l => draw(l))
             })
+            if(step>0)width=acts[step-1].lines.slice(-1)[0].width
         }
         redo = () => {
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
@@ -243,6 +251,7 @@
             acts.slice(lastClearAct(acts, step) + 1, step).forEach(i => {
                 i.lines.forEach(l => draw(l))
             })
+            width=acts[step-1].lines.slice(-1)[0].width
         }
         clear = () => {
             if (timer) {
@@ -252,6 +261,7 @@
                 lines = []
                 timer = false
             }
+            width=1
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
             if (acts[step - 1] && acts[step - 1].isClear || step == 0) return
             acts.splice(step, acts.length - step + 1, { isClear: true, lines: [] })
@@ -260,12 +270,8 @@
         }
         window.onload = (e) => {
             can.height = window.innerHeight
-            cx.strokeStyle = "#fff"
+            cx.strokeStyle = color
             _log = document.getElementById("log")
-            log = (s) => {
-                _log.innerText = s + "_" + acts.length + "_" + step
-            }
-            //log(window.outerHeight+" "+window.innerHeight)
             if (!colorBox) colorBox = document.getElementById('func2')
             colorBox.addEventListener('click', e => {
                 console.log(e.target.id)
@@ -277,7 +283,7 @@
                     colorBox.querySelectorAll(".color")[0].style.display = "none"
                 } else if (tarId === "func2") {
                     colorBox.querySelectorAll(".color")[0].style.display = "block"
-                }
+                }   
             })
             document.addEventListener('click', e => {
                 let id = e.target.id
@@ -333,18 +339,14 @@
             if (timer2) clearInterval(timeoutId2)
             timer2 = true
             timeoutId2 = setInterval(() => {
-                width = (Date.now() - startTime) / 50
+                width = (Date.now() - startTime) / 50>width?(Date.now() - startTime) / 50:width
                 cx.fillStyle = color
                 cx.lineWidth = width
+                cx.beginPath()
                 cx.arc(sx, sy, width / 2, 0, 2 * Math.PI)
                 cx.fill()
             }, 10)
             timer = false
-            cx.lineWidth = width
-            // cx.fillStyle = color
-            cx.beginPath()
-            cx.moveTo(sx, sy)
-            points = [{ sx, sy }]
         }, { passive: false })
 
         can.addEventListener("touchmove", (e) => {
@@ -352,7 +354,11 @@
             if (timer2) {
                 clearInterval(timeoutId2)
                 timer2 = false
+                cx.beginPath()
+                cx.moveTo(sx, sy)
+                points = [{ sx, sy }]
                 cx.lineWidth = width
+                cx.strokeStyle=color
             }
             endTime = Date.now()
             console.log("touchmove")

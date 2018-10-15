@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
     <meta name="msapplication-TileColor" content="#001">
     <meta name="theme-color" content="#001">
-    <title>画画</title>
+    <title>画画v3</title>
+    <script src="simplify.js"></script>
     <style>
         * {
             margin: 0;
@@ -71,6 +72,16 @@
             position: fixed;
             bottom: 0;
             left: 9vw;
+            list-style: none;
+            width: 8vw;
+            min-height: 8vw;
+            background: radial-gradient(#000, #000, #cdf);
+        }
+
+        .func4 {
+            position: fixed;
+            bottom: 0;
+            left: 18vw;
             list-style: none;
             width: 8vw;
             min-height: 8vw;
@@ -214,9 +225,10 @@
                 <li id="wid7" style="background: radial-gradient(#000,#000 70%,#cdf 10%);"></li>
             </ul>
         </div>
+        <div class="func4" id="func4"></div>
     </div>
     <script>
-        let acts = []//record every action line count
+        let acts = []//record every action
         let step = 0
         let lines = [], line = {}, points = []
         let color = "#fff", width = 2, isClear = false
@@ -238,6 +250,7 @@
             14]
         let colorBox = document.getElementById('func2')
         let widthBox = document.getElementById('func3')
+        let aiBox = document.getElementById('func4'), ai = false
         const can = document.getElementById("can")
         can.width = window.innerWidth
         let winH = window.innerHeight
@@ -282,7 +295,7 @@
             acts.slice(lastClearAct(acts, step) + 1, step).forEach(i => {
                 i.lines.forEach(l => draw(l))
             })
-            if (step > 0) width = acts[step - 1].lines.slice(-1)[0].width
+            if (step > 0) width = acts[step - 1].lines.slice(-1)[0] ? acts[step - 1].lines.slice(-1)[0].width : 1
         }
         redo = () => {
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
@@ -308,12 +321,15 @@
             step++
             log('clear')
         }
+        let spf = new Sim(1.1, acts, undo, redo)
         window.onload = (e) => {
             can.height = window.innerHeight
             cx.strokeStyle = color
             _log = document.getElementById("log")
             if (!colorBox) colorBox = document.getElementById('func2')
             if (!widthBox) widthBox = document.getElementById('func3')
+            if (!aiBox) widthBox = document.getElementById('func4')
+            aiBox.style.background="linear-gradient(45deg,#fff,#000 45%,#000 55%,#fff)"
             colorBox.addEventListener('click', e => {
                 console.log(e.target.id)
                 let tarId = e.target.id
@@ -331,11 +347,16 @@
                 let tarId = e.target.id
                 if (/^wid[0-9]$/.test(tarId)) {
                     width = userWidth[tarId.slice(-1)]
-                    cx.lineWidth=width
+                    cx.lineWidth = width
                     widthBox.querySelectorAll(".width")[0].style.display = "none"
                 } else if (tarId === "func3") {
                     widthBox.querySelectorAll(".width")[0].style.display = "block"
                 }
+            })
+            aiBox.addEventListener('click', e => {
+                console.log(e.target.id)
+                ai = !ai
+                e.target.style.background = ai ? "linear-gradient(45deg,#fff,#fff 45%,#000 45%,#000 55%,#fff 55%, #fff)" : "linear-gradient(45deg,#fff,#000 45%,#000 55%,#fff)"
             })
             document.addEventListener('click', e => {
                 let id = e.target.id
@@ -375,7 +396,7 @@
             can.height = window.innerHeight
             cx.strokeStyle = color
             cx.fillStyle = color
-            if(step!==0 && !acts[step-1].isClear){
+            if (step !== 0 && !acts[step - 1].isClear) {
                 undo()
                 redo()
             }
@@ -390,6 +411,7 @@
             clearTimeout(timeoutId)
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
+            spf.apply(sx, sy, "start")
             if (timer2) clearInterval(timeoutId2)
             timer2 = true
             timeoutId2 = setInterval(() => {
@@ -419,9 +441,7 @@
             //e.preventDefault();
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
-            //cx.clearRect(0,0,can.offsetWidth,can.offsetHeight)
-            //cx.beginPath()
-            //cx.moveTo(sx,sy)
+            spf.apply(sx, sy, "move")
             cx.lineTo(sx, sy)
             cx.stroke()
             points.push({ sx, sy })
@@ -437,13 +457,17 @@
                 cx.lineWidth = width
             }
             if (acts.length > step) {
-                acts = acts.slice(0, step)
+                //acts = acts.slice(0, step)//注意两种操作acts的区别
+                acts.splice(step - acts.length)
             }
             lines.push({ points, color, width })
+            spf.apply(sx, sy, "end")
             timer = true
             timeoutId = setTimeout(() => {
                 acts.push({ isClear, lines })
+                console.log(lines[0].points)
                 step++
+                spf.dodo()
                 lines = []
                 timer = false
                 log('TIMEOUT')

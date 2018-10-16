@@ -230,6 +230,7 @@
     <script>
         let acts = []//record every action
         let step = 0
+        let Obj={acts,step,curWid:1,curCol:"#fff"}
         let lines = [], line = {}, points = []
         let color = "#fff", width = 2, isClear = false
         let userColor = ['#ED1C24',
@@ -263,7 +264,7 @@
         let _log
         let log = (s) => {
             if (_log) {
-                _log.innerText = s + "_" + acts.length + "_" + step
+                _log.innerText = s + "_" + Obj.acts.length + "_" + Obj.step
             } else {
                 console.log("_log is undefined")
             }
@@ -290,38 +291,38 @@
         }
         undo = () => {
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
-            step--
+            Obj.step--
             log('undo')
-            acts.slice(lastClearAct(acts, step) + 1, step).forEach(i => {
+            Obj.acts.slice(lastClearAct(Obj.acts, Obj.step) + 1, Obj.step).forEach(i => {
                 i.lines.forEach(l => draw(l))
             })
-            if (step > 0) width = acts[step - 1].lines.slice(-1)[0] ? acts[step - 1].lines.slice(-1)[0].width : 1
+            if (Obj.step > 0) width = Obj.acts[Obj.step - 1].lines.slice(-1)[0] ? Obj.acts[Obj.step - 1].lines.slice(-1)[0].width : 1
         }
         redo = () => {
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
-            step++
+            Obj.step++
             log('redo')
-            console.log(acts.slice(-1)[0])
-            acts.slice(lastClearAct(acts, step) + 1, step).forEach(i => {
+            console.log(Obj.acts.slice(-1)[0])
+            Obj.acts.slice(lastClearAct(Obj.acts, Obj.step) + 1, Obj.step).forEach(i => {
                 i.lines.forEach(l => draw(l))
             })
-            width = acts[step - 1].lines.slice(-1)[0].width
+            width = Obj.acts[Obj.step - 1].lines.slice(-1)[0].width
         }
         clear = () => {
             if (timer) {
                 clearTimeout(timeoutId)
-                acts.push({ isClear, lines })
-                step++
+                Obj.acts.push({ isClear, lines })
+                Obj.step++
                 lines = []
                 timer = false
             }
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
-            if (acts[step - 1] && acts[step - 1].isClear || step == 0) return
-            acts.splice(step, acts.length - step + 1, { isClear: true, lines: [] })
-            step++
+            if (Obj.acts[Obj.step - 1] && Obj.acts[Obj.step - 1].isClear || Obj.step == 0) return
+            Obj.acts.splice(Obj.step, Obj.acts.length - Obj.step + 1, { isClear: true, lines: [] })
+            Obj.step++
             log('clear')
         }
-        let spf = new Sim(1.1, acts, undo, redo)
+        let spf = new Sim(1.1, Obj.acts, undo, redo)
         window.onload = (e) => {
             can.height = window.innerHeight
             cx.strokeStyle = color
@@ -360,26 +361,26 @@
             })
             document.addEventListener('click', e => {
                 let id = e.target.id
-                if (id == "redo" && step < acts.length) {
+                if (id == "redo" && Obj.step < Obj.acts.length) {
                     let i
-                    for (i = step; i < acts.length; i++) {
-                        if (!acts[i].isClear) {
-                            step = i;
+                    for (i = Obj.step; i < Obj.acts.length; i++) {
+                        if (!Obj.acts[i].isClear) {
+                            Obj.step = i;
                             break;
                         }
                     }
-                    if (i === acts.length) return
+                    if (i === Obj.acts.length) return
                     redo()
                 }
-                if (id == "undo" && step > 0) {
-                    if (step == 1) {
+                if (id == "undo" && Obj.step > 0) {
+                    if (Obj.step == 1) {
                         undo()
                         return
                     }
                     let i
-                    for (i = step; i > 0; i--) {
-                        if (acts[i - 2] && !acts[i - 2].isClear) {
-                            step = i;
+                    for (i = Obj.step; i > 0; i--) {
+                        if (Obj.acts[i - 2] && !Obj.acts[i - 2].isClear) {
+                            Obj.step = i;
                             break;
                         }
                     }
@@ -387,7 +388,7 @@
                     undo()
                 }
                 if (id == "clear") clear()
-                console.log(acts)
+                console.log(Obj.acts)
             })
         }
 
@@ -396,7 +397,7 @@
             can.height = window.innerHeight
             cx.strokeStyle = color
             cx.fillStyle = color
-            if (step !== 0 && !acts[step - 1].isClear) {
+            if (Obj.step !== 0 && !Obj.acts[Obj.step - 1].isClear) {
                 undo()
                 redo()
             }
@@ -456,17 +457,17 @@
                 timer2 = false
                 cx.lineWidth = width
             }
-            if (acts.length > step) {
+            if (Obj.acts.length > Obj.step) {
                 //acts = acts.slice(0, step)//注意两种操作acts的区别
-                acts.splice(step - acts.length)
+                Obj.acts.splice(Obj.step - Obj.acts.length)
             }
             lines.push({ points, color, width })
             spf.apply(sx, sy, "end")
             timer = true
             timeoutId = setTimeout(() => {
-                acts.push({ isClear, lines })
+                Obj.acts.push({ isClear, lines })
                 console.log(lines[0].points)
-                step++
+                Obj.step++
                 spf.dodo()
                 lines = []
                 timer = false

@@ -1,5 +1,5 @@
 +function (w) {
-    function Sim(am, arr, ud, rd) {//am是时间间隔的倍数，如果大于这个倍数，这个点就是节点
+    function Sim(am, $obj) {//am是时间间隔的倍数，如果大于这个倍数，这个点就是节点
         this.am = (typeof am === "number" && am > 2) ? am : 3
         var startTime = 0, lastTime = 0, thisDuration = 0, steps = 0,
             avDuration = 0, _line = [], _lines = [], px = 0, py = 0, startX = 0, startY = 0
@@ -8,12 +8,15 @@
         this.show = function () { console.log(this.am) }
         this.dodo = function () {
             if (ai) {
-                ud()
-                var lastAct = arr.pop()
+                $obj.cx.clearRect(0, 0, $obj.can.offsetWidth, $obj.can.offsetHeight)
+                var lastAct = $obj.acts.pop()
                 console.log(_lines)
                 lastAct.lines = lastAct.lines.map((l, i) => Object.assign(l, { points: _lines[i] }))
-                arr.push(lastAct)
-                rd()
+                $obj.acts.push(lastAct)
+                
+                $obj.acts.slice(lastClearAct(Obj.acts, $obj.step) + 1, $obj.step).forEach(i => {
+                    i.lines.forEach(l => draw(l))
+                })
             }
             _line = []
             _lines = []
@@ -93,7 +96,7 @@
                     console.log("AA", _line.map(i => i), tempPoints.map(i => i))
                     _line.splice(10000, 0, ...tempPoints)
                     console.log("AAb", _line.map(i => i))
-                } else if (Math.sqrt(Math.pow((px - _line[0].sx), 2) + Math.pow((py - _line[0].sy), 2)) > width * 10 || _line.length < 3) {
+                } else if (Math.sqrt(Math.pow((px - _line[0].sx), 2) + Math.pow((py - _line[0].sy), 2)) > Obj.curWidth * 10 || _line.length < 3) {
                     _line.push({ sx: px, sy: py })
                 }
                 else {

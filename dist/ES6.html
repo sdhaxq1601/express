@@ -11,13 +11,28 @@
 </head>
 
 <body>
+  <div id="app">
+    <input type="text" name="latitude" id="lat" v-model="lat">
+    <input type="text" name="longitude" id="long" v-model="long">
+  </div>
   <script>
-    //var b = () => 1
-    var a = function () {
-      alert("test1".indexOf("s"))
-    }
-    a()
-    alert(axios)
+    var app=new Vue({
+      el:"#app",
+      data:{
+        lat:0,
+        long:0
+      },
+      methods:{
+      },
+      mounted:function(){
+        alert("mounted")
+        var vm=this
+        navigator.geolocation.getCurrentPosition(function(positon){
+            vm.lat=positon.coords.latitude
+            vm.long=positon.coords.longitude
+          })
+      }
+    })
   </script>
 </body>
 

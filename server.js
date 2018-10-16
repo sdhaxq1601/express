@@ -1,6 +1,13 @@
 var express = require('express')
 var path = require('path')
 var multer = require('multer')
+var fs = require('fs')
+var querystring = require('querystring')
+var openBrowser = require('child_process')
+var https = require('https')
+var privateKey  = fs.readFileSync('192.168.1.223.key', 'utf8')
+var certificate = fs.readFileSync('192.168.1.223.cert', 'utf8')
+var credentials = {key: privateKey, cert: certificate, requestCert:false, rejectUnauthorized:false}
 // var upload=multer({dest:"dist/static/upload/"})
 var storage = multer.diskStorage({
   destination: 'dist/static/upload/',
@@ -10,10 +17,8 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage })
 var dlPath = 'dist/static/download/'
-var fs = require('fs')
-var querystring = require('querystring')
+
 var app = express()
-var openBrowser = require('child_process')
 var history = []
 app.use(express.static('D:\\Node\\dist'))
 console.log(new Date())
@@ -54,10 +59,13 @@ app.post('/file-upload', upload.array('sfile'), function(req, res, next) {
   console.log(req.files)
   res.send('fus')
 })
-
+var httpsServer = https.createServer(credentials, app)
 var server = app.listen(8091, function() {
   var host = server.address().address
   var port = server.address().port
 
   console.log('应用实例，访问地址为 http://%s:%s', host, port)
+})
+httpsServer.listen(443,function(){
+  console.log("https sever is running")
 })

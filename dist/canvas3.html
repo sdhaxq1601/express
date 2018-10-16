@@ -230,9 +230,8 @@
     <script>
         let acts = []//record every action
         let step = 0
-        let Obj={acts,step,curWid:1,curCol:"#fff"}
         let lines = [], line = {}, points = []
-        let color = "#fff", width = 2, isClear = false
+        let isClear = false
         let userColor = ['#ED1C24',
             '#FF7F27',
             '#FFF200',
@@ -254,10 +253,10 @@
         let aiBox = document.getElementById('func4'), ai = false
         const can = document.getElementById("can")
         can.width = window.innerWidth
-        let winH = window.innerHeight
         let cx = can.getContext("2d")
-        cx.strokeStyle = color
-        cx.fillStyle = color
+        let Obj = { acts, step, curWidth: 1, curColor: "#fff", cx, can }
+        cx.strokeStyle = Obj.curColor
+        cx.fillStyle = Obj.curColor
         let func = document.getElementById("func")
         func.addEventListener('touchmove', (e) => { e.preventDefault() })
         let sx, sy
@@ -296,7 +295,7 @@
             Obj.acts.slice(lastClearAct(Obj.acts, Obj.step) + 1, Obj.step).forEach(i => {
                 i.lines.forEach(l => draw(l))
             })
-            if (Obj.step > 0) width = Obj.acts[Obj.step - 1].lines.slice(-1)[0] ? Obj.acts[Obj.step - 1].lines.slice(-1)[0].width : 1
+            if (Obj.step > 0) Obj.curWidth = Obj.acts[Obj.step - 1].lines.slice(-1)[0] ? Obj.acts[Obj.step - 1].lines.slice(-1)[0].width : 1
         }
         redo = () => {
             cx.clearRect(0, 0, can.offsetWidth, can.offsetHeight)
@@ -306,7 +305,7 @@
             Obj.acts.slice(lastClearAct(Obj.acts, Obj.step) + 1, Obj.step).forEach(i => {
                 i.lines.forEach(l => draw(l))
             })
-            width = Obj.acts[Obj.step - 1].lines.slice(-1)[0].width
+            Obj.curWidth = Obj.acts[Obj.step - 1].lines.slice(-1)[0].width
         }
         clear = () => {
             if (timer) {
@@ -322,22 +321,22 @@
             Obj.step++
             log('clear')
         }
-        let spf = new Sim(1.1, Obj.acts, undo, redo)
+        let spf = new Sim(1.1, Obj)
         window.onload = (e) => {
             can.height = window.innerHeight
-            cx.strokeStyle = color
+            cx.strokeStyle = Obj.curColor
             _log = document.getElementById("log")
             if (!colorBox) colorBox = document.getElementById('func2')
             if (!widthBox) widthBox = document.getElementById('func3')
             if (!aiBox) widthBox = document.getElementById('func4')
-            aiBox.style.background="linear-gradient(45deg,#fff,#000 45%,#000 55%,#fff)"
+            aiBox.style.background = "linear-gradient(45deg,#fff,#000 45%,#000 55%,#fff)"
             colorBox.addEventListener('click', e => {
                 console.log(e.target.id)
                 let tarId = e.target.id
                 if (/^col[0-9]$/.test(tarId)) {
-                    color = userColor[tarId.slice(-1)]
-                    cx.strokeStyle = color
-                    cx.fillStyle = color
+                    Obj.curColor = userColor[tarId.slice(-1)]
+                    cx.strokeStyle = Obj.curColor
+                    cx.fillStyle = Obj.curColor
                     colorBox.querySelectorAll(".color")[0].style.display = "none"
                 } else if (tarId === "func2") {
                     colorBox.querySelectorAll(".color")[0].style.display = "block"
@@ -347,8 +346,8 @@
                 console.log(e.target.id)
                 let tarId = e.target.id
                 if (/^wid[0-9]$/.test(tarId)) {
-                    width = userWidth[tarId.slice(-1)]
-                    cx.lineWidth = width
+                    Obj.curWidth = userWidth[tarId.slice(-1)]
+                    cx.lineWidth = Obj.curWidth
                     widthBox.querySelectorAll(".width")[0].style.display = "none"
                 } else if (tarId === "func3") {
                     widthBox.querySelectorAll(".width")[0].style.display = "block"
@@ -395,8 +394,8 @@
         window.onresize = (e) => {
             can.width = window.innerWidth
             can.height = window.innerHeight
-            cx.strokeStyle = color
-            cx.fillStyle = color
+            cx.strokeStyle = Obj.curColor
+            cx.fillStyle = Obj.curColor
             if (Obj.step !== 0 && !Obj.acts[Obj.step - 1].isClear) {
                 undo()
                 redo()
@@ -412,15 +411,16 @@
             clearTimeout(timeoutId)
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
+            points = [{ sx, sy }]
             spf.apply(sx, sy, "start")
             if (timer2) clearInterval(timeoutId2)
             timer2 = true
             timeoutId2 = setInterval(() => {
-                width = (Date.now() - startTime) / 50 > width ? (Date.now() - startTime) / 50 : width
-                cx.fillStyle = color
-                cx.lineWidth = width
+                Obj.curWidth = (Date.now() - startTime) / 50 > Obj.curWidth ? (Date.now() - startTime) / 50 : Obj.curWidth
+                cx.fillStyle = Obj.curColor
+                cx.lineWidth = Obj.curWidth
                 cx.beginPath()
-                cx.arc(sx, sy, width / 2, 0, 2 * Math.PI)
+                cx.arc(sx, sy, Obj.curWidth / 2, 0, 2 * Math.PI)
                 cx.fill()
             }, 10)
             timer = false
@@ -433,9 +433,8 @@
                 timer2 = false
                 cx.beginPath()
                 cx.moveTo(sx, sy)
-                points = [{ sx, sy }]
-                cx.lineWidth = width
-                cx.strokeStyle = color
+                cx.lineWidth = Obj.curWidth
+                cx.strokeStyle = Obj.curColor
             }
             endTime = Date.now()
             console.log("touchmove")
@@ -443,8 +442,18 @@
             sx = e.touches[0].pageX - can.offsetLeft
             sy = e.touches[0].pageY - can.offsetTop
             spf.apply(sx, sy, "move")
-            cx.lineTo(sx, sy)
-            cx.stroke()
+            if (false) {
+                var _x = points.slice(-1)[0].sx, _y = points.slice(-1)[0].sy
+                var _l = 100
+                var _a = (sy - _y) / (sx - _x), _b
+                _b = sy - _a * sx
+                cx.moveTo(_x, _y)
+                cx.lineTo(sx, sy)
+                cx.stroke()
+            } else {
+                cx.lineTo(sx, sy)
+                cx.stroke()
+            }
             points.push({ sx, sy })
             //e.stopPropagation();
         }, { passive: false })
@@ -455,13 +464,13 @@
             if (timer2) {
                 clearInterval(timeoutId2)
                 timer2 = false
-                cx.lineWidth = width
+                cx.lineWidth = Obj.curWidth
             }
             if (Obj.acts.length > Obj.step) {
                 //acts = acts.slice(0, step)//注意两种操作acts的区别
                 Obj.acts.splice(Obj.step - Obj.acts.length)
             }
-            lines.push({ points, color, width })
+            lines.push({ points, color: Obj.curColor, width: Obj.curWidth })
             spf.apply(sx, sy, "end")
             timer = true
             timeoutId = setTimeout(() => {

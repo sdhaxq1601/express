@@ -97,7 +97,7 @@
             steps = 0
             startX = x
             startY = y
-            tempPoints = []
+            tempPoints = [{ sx: x, sy: y }]
             badAngCount = 0
           }
           lastTime = now

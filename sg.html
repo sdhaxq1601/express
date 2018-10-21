@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<style>
+ul{
+	list-style-type:none;
+}
+</style>
+</head>
+<body>
+<script>
+function say(l) {
+            return (
+            l.reduce((a, i) => {
+                return i?a ? a.then(
+                    function (v) {
+                        return new Promise((rs, rj) => {
+                            i.onended = function () {
+                                rs(Date.now())
+                            }
+                            i.play()
+                        }
+                        )
+                    }
+                ) : new Promise((rs, rj) => {
+                    i.onended = function () {
+                        rs(Date.now())
+                    }
+                    i.play()
+                }
+
+                ):a
+            }
+                , 0)
+            )
+        }
+        
+var l1='[{"ch":["http://sound.file.czyzd.com/czh/ED6021EA-09CB-427B-8431-4D7AEA867BEF.mp3"],"ph":["http://sound.file.czyzd.com/pth/F49E646A-2F50-4E0B-A085-BC473FEA1343.mp3"],"name":"春"},{"ch":["http://sound.file.czyzd.com/czh/F010F86A-1D0C-4EEA-A5F8-89F5C2CC4BDE.mp3","http://sound.file.czyzd.com/czh/DC6A4832-B37C-4944-81C2-DC08ED7498C0.mp3"],"ph":["http://sound.file.czyzd.com/pth/14AC4D82-272D-4A6A-BB06-83DC916F7E93.mp3"],"name":"眠"},{"ch":["http://sound.file.czyzd.com/czh/90651178-DDC2-4DFF-9C4A-EF2EC33A5190.mp3","http://sound.file.czyzd.com/czh/6EE06961-014F-4075-A522-C751C3E7095E.mp3"],"ph":["http://sound.file.czyzd.com/pth/7CE9809D-AD26-4462-B2F9-A84B0A5EC135.mp3","http://sound.file.czyzd.com/pth/9B91AFA8-8630-4387-B7CE-54A9DB11A593.mp3"],"name":"不"},{"ch":["http://sound.file.czyzd.com/czh/E3657619-6721-4E1E-9A82-B54FC626444C.mp3"],"ph":["http://sound.file.czyzd.com/pth/C6933AEB-C0E3-4BDA-A39D-C7AE71C2AEA0.mp3","http://sound.file.czyzd.com/pth/8E7ED14B-B1FB-4CA6-96DB-5FAC6F36D09D.mp3"],"name":"觉"},{"ch":["http://sound.file.czyzd.com/czh/0ED505C8-D39B-49F8-BE1D-241D5AA778E9.mp3","http://sound.file.czyzd.com/czh/4BA172EA-E2E3-4644-8480-3765A4D9BE96.mp3","http://sound.file.czyzd.com/czh/4BA172EA-E2E3-4644-8480-3765A4D9BE96.mp3"],"ph":["http://sound.file.czyzd.com/pth/3932D307-01BA-4A70-ADAE-821253007DEE.mp3"],"name":"晓"},{"ch":["http://sound.file.czyzd.com/czh/CAFC77CC-6A23-4C56-AE46-BB6AE8E17FFF.mp3"],"ph":["http://sound.file.czyzd.com/pth/5FE3ED02-A5A9-48F3-B926-577F7496C269.mp3","http://sound.file.czyzd.com/pth/3E406025-1262-47A4-BA85-E4D833EE64DE.mp3"],"name":"处"},{"ch":["http://sound.file.czyzd.com/czh/CAFC77CC-6A23-4C56-AE46-BB6AE8E17FFF.mp3"],"ph":["http://sound.file.czyzd.com/pth/5FE3ED02-A5A9-48F3-B926-577F7496C269.mp3","http://sound.file.czyzd.com/pth/3E406025-1262-47A4-BA85-E4D833EE64DE.mp3"],"name":"处"},{"ch":["http://sound.file.czyzd.com/czh/88BD95EE-BE78-427B-9C71-D567ACCE090F.mp3"],"ph":["http://sound.file.czyzd.com/pth/FCED5CD4-32D6-4D8B-A817-F44801B00D91.mp3"],"name":"闻"},{"ch":["http://sound.file.czyzd.com/czh/CF5D5A52-AC65-4E45-9066-5AFFF34EDDD0.mp3"],"ph":["http://sound.file.czyzd.com/pth/88EDB420-9A25-4316-8992-0536481A218A.mp3"],"name":"啼"},{"ch":["http://sound.file.czyzd.com/czh/739202B5-15DE-491C-B531-0CB55F50170A.mp3","http://sound.file.czyzd.com/czh/DE26361C-BA3A-4AE9-8C37-5DA0BD93BA3C.mp3","http://sound.file.czyzd.com/czh/DE26361C-BA3A-4AE9-8C37-5DA0BD93BA3C.mp3"],"ph":["http://sound.file.czyzd.com/pth/A3536217-E153-4BA9-AEAF-45E15D90DCDA.mp3"],"name":"鸟"}]'
+		
+var l=[l1]
+var sg=[]
+l.forEach(i=>{
+    var ls=[]
+    var obj=JSON.parse(i)
+    var div=document.createElement('div')
+	div.setAttribute('class','sg')
+	var ul=document.createElement('ul')
+	div.appendChild(ul)
+	obj.forEach(o=>{
+		var li=document.createElement('li')
+		li.innerHTML=o.name
+		if(o.ch.length){
+			o.ch.forEach(ch=>{
+				var ad=document.createElement('audio')
+				var b=document.createElement('button')
+				b.innerHTML="O"
+				b.click=function(){ad.play()}
+				ad.src=ch
+				b.setAttribute('class','ch')
+				li.appendChild(ad)
+				li.appendChild(b)
+			})
+			o.ph.forEach(ch=>{
+				var ad=document.createElement('audio')
+				var b=document.createElement('button')
+				b.innerHTML="O"
+				b.click=function(){ad.play()}
+				ad.src=ch
+				b.setAttribute('class','ph')
+				li.appendChild(ad)
+				li.appendChild(b)
+			})
+		}
+		ul.appendChild(li)
+	})
+	document.body.appendChild(div)
+})
+/*sg.forEach((i,j)=>{
+    document.body.innerHTML+=`<div class='sg' id='${j}' style='width:20vw;height:20vw;font-size:6vw;border:1px solid #555;'>${i.name}</div>`
+})
+document.addEventListener('click',function(e){
+    //alert(e.target.id)
+    if(sg[e.target.id]){
+        say(sg[e.target.id].mp3)
+    }
+})*/
+
+</script>
+</body>
+</html>

@@ -15,22 +15,69 @@
     <input type="text" name="latitude" id="lat" v-model="lat">
     <input type="text" name="longitude" id="long" v-model="long">
   </div>
+  <audio src="./static/upload/Rock N Roll.mp3" controls id="ad1"></audio>
   <script>
-    var app=new Vue({
-      el:"#app",
-      data:{
-        lat:0,
-        long:0
+    var ad1 = document.getElementById('ad1')
+    ad1 = document.createElement('audio')
+    // ad1.onended = function () { alert('ended') }
+    // ad1.onpause = function () { alert('pause') }
+    var ad2 = document.createElement('audio')
+    ad2.src = "//192.168.1.223:8880/laba/c10.mp3"
+    console.log(ad2.paused)
+    getSrc = src => "//192.168.1.223:8880/laba/" + src + ".mp3"
+
+    document.addEventListener('click', function () {
+      //setTimeout(function () { baoshi(ad2) }, 5000)
+      ad1.play()
+      ad1.pause()
+      // setTimeout(function () { ad1.pause() }, 200)
+    }
+    )
+    var ct = 0
+    function playNext() {
+      ct++
+      if (ct < 11) {
+        ad1.src = getSrc('c' + ct)
+        ad1.play()
+      } else {
+        ad1.onended = function () { }
+      }
+    }
+    setTimeout(function () {
+      ad1.src = getSrc('c0')
+      ad1.play()
+      ad1.onended = function () {
+        playNext()
+      }
+    }, 4000)
+    function baoshi(ad2) {
+      var t = new Date()
+      console.log(t)
+      var h = t.getHours(), m = t.getMinutes(), s = t.getSeconds()
+      var l
+      l = [...(h < 11 ? ['c' + h] : h < 20 ? ['c10_f', 'c' + h % 10] : h == 20 ? ['c2_f', 'c10'] : ['c2_f', 'c10_f', 'c' + h % 10]), 'hour']
+      l = [...l, ...(m < 11 ? ['c' + m] : m < 20 ? ['c10_f', 'c' + (m % 10 > 2 ? m % 10 : m % 10 + "_1")] : !(m % 10) ? ['c' + parseInt(m / 10) + '_f', 'c10'] : ['c' + parseInt(m / 10) + '_f', 'c10_f', 'c' + (m % 10 > 2 ? m % 10 : m % 10 + "_1")]), 'minute']
+      l = [...l, ...(s < 11 ? ['c' + s] : s < 20 ? ['c10_f', 'c' + (s % 10 > 2 ? s % 10 : s % 10 + "_1")] : !(s % 10) ? ['c' + parseInt(s / 10) + '_f', 'c10'] : ['c' + parseInt(s / 10) + '_f', 'c10_f', 'c' + (s % 10 > 2 ? s % 10 : s % 10 + "_1")]), 'second']
+      console.log(l)
+      l.reduce((a, i, j) => a ? a.then(function (v) { return new Promise((rs, rj) => { ad2.src = getSrc(i); ad2.play(); ad2.onended = function () { rs(Date.now()) } }) }) : new Promise((rs, rj) => { ad2.src = getSrc(i); ad2.play(); ad2.onended = function () { rs(Date.now()) } }), 0)
+
+    }
+
+    var app = new Vue({
+      el: "#app",
+      data: {
+        lat: 0,
+        long: 0
       },
-      methods:{
+      methods: {
       },
-      mounted:function(){
-        alert("mounted")
-        var vm=this
-        navigator.geolocation.getCurrentPosition(function(positon){
-            vm.lat=positon.coords.latitude
-            vm.long=positon.coords.longitude
-          })
+      mounted: function () {
+        // alert("mounted")
+        var vm = this
+        navigator.geolocation.getCurrentPosition(function (positon) {
+          vm.lat = positon.coords.latitude
+          vm.long = positon.coords.longitude
+        })
       }
     })
   </script>

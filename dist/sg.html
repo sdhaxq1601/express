@@ -1,9 +1,27 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset='utf-8'>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
 <style>
 ul{
 	list-style-type:none;
+}
+ul>li{
+	display: inline-block;
+	text-align: center;
+	vertical-align: top;
+}
+li>*{
+	display: block;
+}
+.ch{
+	background: #99f;
+}
+.ph{
+	background: #f00;
 }
 </style>
 </head>
@@ -36,8 +54,9 @@ function say(l) {
         }
         
 var l1='[{"ch":["http://sound.file.czyzd.com/czh/ED6021EA-09CB-427B-8431-4D7AEA867BEF.mp3"],"ph":["http://sound.file.czyzd.com/pth/F49E646A-2F50-4E0B-A085-BC473FEA1343.mp3"],"name":"春"},{"ch":["http://sound.file.czyzd.com/czh/F010F86A-1D0C-4EEA-A5F8-89F5C2CC4BDE.mp3","http://sound.file.czyzd.com/czh/DC6A4832-B37C-4944-81C2-DC08ED7498C0.mp3"],"ph":["http://sound.file.czyzd.com/pth/14AC4D82-272D-4A6A-BB06-83DC916F7E93.mp3"],"name":"眠"},{"ch":["http://sound.file.czyzd.com/czh/90651178-DDC2-4DFF-9C4A-EF2EC33A5190.mp3","http://sound.file.czyzd.com/czh/6EE06961-014F-4075-A522-C751C3E7095E.mp3"],"ph":["http://sound.file.czyzd.com/pth/7CE9809D-AD26-4462-B2F9-A84B0A5EC135.mp3","http://sound.file.czyzd.com/pth/9B91AFA8-8630-4387-B7CE-54A9DB11A593.mp3"],"name":"不"},{"ch":["http://sound.file.czyzd.com/czh/E3657619-6721-4E1E-9A82-B54FC626444C.mp3"],"ph":["http://sound.file.czyzd.com/pth/C6933AEB-C0E3-4BDA-A39D-C7AE71C2AEA0.mp3","http://sound.file.czyzd.com/pth/8E7ED14B-B1FB-4CA6-96DB-5FAC6F36D09D.mp3"],"name":"觉"},{"ch":["http://sound.file.czyzd.com/czh/0ED505C8-D39B-49F8-BE1D-241D5AA778E9.mp3","http://sound.file.czyzd.com/czh/4BA172EA-E2E3-4644-8480-3765A4D9BE96.mp3","http://sound.file.czyzd.com/czh/4BA172EA-E2E3-4644-8480-3765A4D9BE96.mp3"],"ph":["http://sound.file.czyzd.com/pth/3932D307-01BA-4A70-ADAE-821253007DEE.mp3"],"name":"晓"},{"ch":["http://sound.file.czyzd.com/czh/CAFC77CC-6A23-4C56-AE46-BB6AE8E17FFF.mp3"],"ph":["http://sound.file.czyzd.com/pth/5FE3ED02-A5A9-48F3-B926-577F7496C269.mp3","http://sound.file.czyzd.com/pth/3E406025-1262-47A4-BA85-E4D833EE64DE.mp3"],"name":"处"},{"ch":["http://sound.file.czyzd.com/czh/CAFC77CC-6A23-4C56-AE46-BB6AE8E17FFF.mp3"],"ph":["http://sound.file.czyzd.com/pth/5FE3ED02-A5A9-48F3-B926-577F7496C269.mp3","http://sound.file.czyzd.com/pth/3E406025-1262-47A4-BA85-E4D833EE64DE.mp3"],"name":"处"},{"ch":["http://sound.file.czyzd.com/czh/88BD95EE-BE78-427B-9C71-D567ACCE090F.mp3"],"ph":["http://sound.file.czyzd.com/pth/FCED5CD4-32D6-4D8B-A817-F44801B00D91.mp3"],"name":"闻"},{"ch":["http://sound.file.czyzd.com/czh/CF5D5A52-AC65-4E45-9066-5AFFF34EDDD0.mp3"],"ph":["http://sound.file.czyzd.com/pth/88EDB420-9A25-4316-8992-0536481A218A.mp3"],"name":"啼"},{"ch":["http://sound.file.czyzd.com/czh/739202B5-15DE-491C-B531-0CB55F50170A.mp3","http://sound.file.czyzd.com/czh/DE26361C-BA3A-4AE9-8C37-5DA0BD93BA3C.mp3","http://sound.file.czyzd.com/czh/DE26361C-BA3A-4AE9-8C37-5DA0BD93BA3C.mp3"],"ph":["http://sound.file.czyzd.com/pth/A3536217-E153-4BA9-AEAF-45E15D90DCDA.mp3"],"name":"鸟"}]'
-		
-var l=[l1]
+var l2='[{"ch":["http://sound.file.czyzd.com/czh/8692D57B-CE51-470E-9122-FEE8A1A4D5D2.mp3","http://sound.file.czyzd.com/czh/A57B7836-EE01-449B-9B67-1D5DBD1A7082.mp3","http://sound.file.czyzd.com/czh/A57B7836-EE01-449B-9B67-1D5DBD1A7082.mp3","http://sound.file.czyzd.com/czh/46B9CAC9-9CFE-4F8B-BAFA-942D66E9E8F5.mp3","http://sound.file.czyzd.com/czh/35B3BDDE-20AA-4D30-A6C1-9A95423F5A9C.mp3","http://sound.file.czyzd.com/czh/35B3BDDE-20AA-4D30-A6C1-9A95423F5A9C.mp3"],"ph":["http://sound.file.czyzd.com/pth/2EE10ACD-08B9-4265-8AFB-0F58280B9234.mp3","http://sound.file.czyzd.com/pth/2BAE7B84-B148-4F6E-BD2E-DF72EDCFF29F.mp3"],"name":"朝"},{"ch":["http://sound.file.czyzd.com/czh/03067F3F-0CCD-4A41-9456-5B780CD6A293.mp3","http://sound.file.czyzd.com/czh/BF79A901-F084-4792-B598-3988938A81F4.mp3"],"ph":["http://sound.file.czyzd.com/pth/8C4446EF-F164-41E3-A2C6-25903A581279.mp3"],"name":"辞"},{"ch":["http://sound.file.czyzd.com/czh/C8FDA424-641A-4D8D-931E-9AB27BA857E2.mp3"],"ph":["http://sound.file.czyzd.com/pth/7B579536-7007-4438-A1BC-AD2B49926BEB.mp3"],"name":"白"},{"ch":["http://sound.file.czyzd.com/czh/862F889F-5ECB-44AF-84CE-93624500DB19.mp3"],"ph":["http://sound.file.czyzd.com/pth/88E1BF58-65A5-4C4E-8D0A-55E42058E229.mp3"],"name":"帝"},{"ch":["http://sound.file.czyzd.com/czh/BA65C2F7-0AF0-4BE8-B65E-CB6305F538C5.mp3"],"ph":["http://sound.file.czyzd.com/pth/7CB9CDF9-0737-4FFE-B9B3-14F05172A80F.mp3"],"name":"彩"},{"ch":["http://sound.file.czyzd.com/czh/049B2B80-0630-4AF5-B226-8571C25B550A.mp3","http://sound.file.czyzd.com/czh/FA44A7CF-070D-4203-9221-B9CF235B1AF4.mp3","http://sound.file.czyzd.com/czh/5D248DDA-B6CB-4F56-99A3-B2D544D0E0F1.mp3"],"ph":["http://sound.file.czyzd.com/pth/6E4A5722-46D6-4F90-9749-C8285B7592E7.mp3"],"name":"云"},{"ch":["http://sound.file.czyzd.com/czh/3F6D6E95-E9F1-4F8A-8C42-B22EF76C2905.mp3","http://sound.file.czyzd.com/czh/B69F3E7E-7106-4E5A-8526-7FBD7EAA91FE.mp3","http://sound.file.czyzd.com/czh/22B03D8E-F0CC-43B8-9F73-5988F764BBEF.mp3","http://sound.file.czyzd.com/czh/B7693600-7ABE-4286-A765-E75AD8E3DAB6.mp3","http://sound.file.czyzd.com/czh/039F346A-1111-4FE8-B919-7448E30D318E.mp3"],"ph":["http://sound.file.czyzd.com/pth/4D1D4E3A-BE95-46C0-A851-BEA37C61CACA.mp3","http://sound.file.czyzd.com/pth/F538EE75-EB6C-4CF9-9097-FCB6088BA689.mp3"],"name":"间"},{"ch":["http://sound.file.czyzd.com/czh/C255938B-860F-4999-AD97-7014E211ABB9.mp3","http://sound.file.czyzd.com/czh/3A8D4870-60E2-40CE-813B-B8A6AA30BF67.mp3"],"ph":["http://sound.file.czyzd.com/pth/DE44E545-585D-4CA0-935D-DD810DFE0D1F.mp3"],"name":"千"},{"ch":["http://sound.file.czyzd.com/czh/886BDEE0-EED0-4801-A872-C0E695FA39A5.mp3","http://sound.file.czyzd.com/czh/2D8E047A-2C9B-4914-B5EE-7EBB6612DADD.mp3"],"ph":["http://sound.file.czyzd.com/pth/8DEF3ACF-4D87-4F07-A87A-C16DB4B28A59.mp3"],"name":"里"},{"ch":["http://sound.file.czyzd.com/czh/3F6D6E95-E9F1-4F8A-8C42-B22EF76C2905.mp3"],"ph":["http://sound.file.czyzd.com/pth/52C41081-F7D0-48E0-BF86-1DF1C9D5076F.mp3"],"name":"江"},{"ch":["http://sound.file.czyzd.com/czh/83B141DF-5FB6-4E89-9C94-38BA6A4EBD56.mp3"],"ph":["http://sound.file.czyzd.com/pth/2EE9A9EC-FA55-44BF-915F-0F5CFA992FEE.mp3"],"name":"陵"},{"ch":["http://sound.file.czyzd.com/czh/79D6210C-7DCE-4682-BE13-E8FB1C3DC00E.mp3","http://sound.file.czyzd.com/czh/81DA06E6-E5A4-4EE7-BE74-09D17E7E25DC.mp3","http://sound.file.czyzd.com/czh/0889442C-9674-4B16-94F1-8BE4B0BB09C2.mp3","http://sound.file.czyzd.com/czh/62F65FE0-DC8B-4E86-B196-ED13DDA1AB57.mp3","http://sound.file.czyzd.com/czh/1D672D57-52B8-4CBA-8C7F-A816CAEA6730.mp3","http://sound.file.czyzd.com/czh/1D672D57-52B8-4CBA-8C7F-A816CAEA6730.mp3"],"ph":["http://sound.file.czyzd.com/pth/971CF687-2F9E-411D-B7BE-98959BDC828D.mp3"],"name":"一"},{"ch":["http://sound.file.czyzd.com/czh/0359BA05-D7C2-4E13-A0F1-70BE7EBA90F6.mp3","http://sound.file.czyzd.com/czh/0BEB1ADB-4C46-4DBA-8B74-E47159D11BD5.mp3"],"ph":["http://sound.file.czyzd.com/pth/BFF4860F-9C39-40E9-B122-14AEB0E85BDC.mp3"],"name":"日"},{"ch":["http://sound.file.czyzd.com/czh/7863E5E5-0D54-4A31-B032-7B05ECAA9E6D.mp3","http://sound.file.czyzd.com/czh/D81AE14D-DFE5-46FC-AB32-AAE0DD6605B8.mp3","http://sound.file.czyzd.com/czh/D81AE14D-DFE5-46FC-AB32-AAE0DD6605B8.mp3","http://sound.file.czyzd.com/czh/D81AE14D-DFE5-46FC-AB32-AAE0DD6605B8.mp3","http://sound.file.czyzd.com/czh/28A02405-999E-49DF-ADF2-453C5C176BE3.mp3","http://sound.file.czyzd.com/czh/33E51E89-98C2-42FD-B638-928124164A25.mp3","http://sound.file.czyzd.com/czh/33E51E89-98C2-42FD-B638-928124164A25.mp3","http://sound.file.czyzd.com/czh/92B9A8AB-FFED-45B9-948C-0FDCA5275E25.mp3"],"ph":["http://sound.file.czyzd.com/pth/F00DAD96-3D6E-4B10-B420-DEFC8EFF0BDE.mp3","http://sound.file.czyzd.com/pth/FE2EB812-3D53-4F91-B2AD-E37B7D951B02.mp3"],"name":"还"},{"ch":["http://sound.file.czyzd.com/czh/37F4AB7C-C42A-49E4-8FC5-6C6E5D937BF4.mp3","http://sound.file.czyzd.com/czh/13474AC5-39F6-4D36-8398-E6BA0B4EEDAB.mp3","http://sound.file.czyzd.com/czh/16E20727-C025-4022-BE7A-2700E39FC301.mp3","http://sound.file.czyzd.com/czh/B4A1F36F-2317-41E9-930F-C621800F5CF6.mp3","http://sound.file.czyzd.com/czh/B4A1F36F-2317-41E9-930F-C621800F5CF6.mp3"],"ph":["http://sound.file.czyzd.com/pth/DDD12BB3-6C59-4285-A696-8E50D70FA72A.mp3"],"name":"两"},{"ch":["http://sound.file.czyzd.com/czh/446A59D4-2009-4ECB-8E57-0843A168008A.mp3"],"ph":["http://sound.file.czyzd.com/pth/E8DE3578-7595-41BF-9AE5-DF46332D549B.mp3"],"name":"岸"},{"ch":["http://sound.file.czyzd.com/czh/450BF814-085C-47F6-88A7-A5C407F726D7.mp3","http://sound.file.czyzd.com/czh/716FFCBD-5FDD-489A-9E89-A5CDA920A442.mp3","http://sound.file.czyzd.com/czh/716FFCBD-5FDD-489A-9E89-A5CDA920A442.mp3","http://sound.file.czyzd.com/czh/716FFCBD-5FDD-489A-9E89-A5CDA920A442.mp3"],"ph":["http://sound.file.czyzd.com/pth/4F2D1A8F-EB4B-4399-93A9-E688A2981CA6.mp3"],"name":"猿"},{"ch":["http://sound.file.czyzd.com/czh/87377DD6-F682-4568-9B60-32F7CF3BEAEA.mp3"],"ph":["http://sound.file.czyzd.com/pth/47D546A2-2849-413D-9A95-29D05CCACAC1.mp3"],"name":"声"},{"ch":["http://sound.file.czyzd.com/czh/CF5D5A52-AC65-4E45-9066-5AFFF34EDDD0.mp3"],"ph":["http://sound.file.czyzd.com/pth/88EDB420-9A25-4316-8992-0536481A218A.mp3"],"name":"啼"},{"ch":["http://sound.file.czyzd.com/czh/90651178-DDC2-4DFF-9C4A-EF2EC33A5190.mp3","http://sound.file.czyzd.com/czh/6EE06961-014F-4075-A522-C751C3E7095E.mp3"],"ph":["http://sound.file.czyzd.com/pth/7CE9809D-AD26-4462-B2F9-A84B0A5EC135.mp3","http://sound.file.czyzd.com/pth/9B91AFA8-8630-4387-B7CE-54A9DB11A593.mp3"],"name":"不"},{"ch":["http://sound.file.czyzd.com/czh/08B90864-85AE-4452-B04A-CC7305019614.mp3","http://sound.file.czyzd.com/czh/B567AA09-F176-4B17-B128-2D629924AE93.mp3"],"ph":["http://sound.file.czyzd.com/pth/DFBADEDF-CA47-40F8-91D8-010F93E5BA73.mp3"],"name":"住"},{"ch":["http://sound.file.czyzd.com/czh/EB773C0D-F80D-4FF9-AF85-C9AA535C696F.mp3","http://sound.file.czyzd.com/czh/D54F2E70-B7E0-436C-9436-A86518A0980D.mp3"],"ph":["http://sound.file.czyzd.com/pth/6015A5ED-8420-40EC-BFBD-E427ABE16C04.mp3"],"name":"轻"},{"ch":["http://sound.file.czyzd.com/czh/7F5DE6BD-D48C-43B2-827F-6A0F072B1439.mp3"],"ph":["http://sound.file.czyzd.com/pth/961C5014-AA39-4ECB-8832-0832CA12E18A.mp3"],"name":"舟"},{"ch":["http://sound.file.czyzd.com/czh/5F8F27CA-CC54-4D92-A991-D5F051C1DA39.mp3"],"ph":["http://sound.file.czyzd.com/pth/0EB27CA2-FDF7-4C65-8676-35E0D7256B8E.mp3"],"name":"已"},{"ch":["http://sound.file.czyzd.com/czh/41AF32B2-A5AE-466F-9591-3AFF22543D1C.mp3"],"ph":["http://sound.file.czyzd.com/pth/868E18FB-F743-4401-98F9-C9259CED0FF9.mp3","http://sound.file.czyzd.com/pth/D653295B-9280-4C21-B99E-DCFED7E53CAE.mp3"],"name":"过"},{"ch":["http://sound.file.czyzd.com/czh/60A147A7-3178-47E2-8871-29EDCBFE1BD3.mp3","http://sound.file.czyzd.com/czh/08922262-412C-467D-B324-C4802DCACC7B.mp3","http://sound.file.czyzd.com/czh/08922262-412C-467D-B324-C4802DCACC7B.mp3","http://sound.file.czyzd.com/czh/08922262-412C-467D-B324-C4802DCACC7B.mp3","http://sound.file.czyzd.com/czh/08922262-412C-467D-B324-C4802DCACC7B.mp3","http://sound.file.czyzd.com/czh/9669D5B5-AB72-4155-8E9E-91BCB88B2723.mp3"],"ph":["http://sound.file.czyzd.com/pth/D8FB3FD2-F299-483A-9FAE-0B761AA7129C.mp3","http://sound.file.czyzd.com/pth/A3D1494A-4319-446E-807E-79D6360956AE.mp3"],"name":"万"},{"ch":["http://sound.file.czyzd.com/czh/37F2D410-A341-49F6-9081-80B2FB2B7B83.mp3","http://sound.file.czyzd.com/czh/F859E9FE-F014-4AD0-AA10-A1C2415BC9C4.mp3","http://sound.file.czyzd.com/czh/E7203BCF-C25A-4613-AB9B-BC54F3217948.mp3"],"ph":["http://sound.file.czyzd.com/pth/A4C0A813-691E-4DD0-B142-08CD9F2A6A23.mp3","http://sound.file.czyzd.com/pth/BC202535-4A1E-4982-BA0A-0FDF40814363.mp3"],"name":"重"},{"ch":["http://sound.file.czyzd.com/czh/78C98DDC-021C-41B8-A21C-033E47BF27CF.mp3"],"ph":["http://sound.file.czyzd.com/pth/8CDA2B01-EB1A-421A-A41F-9387D0A02C03.mp3"],"name":"山"}]'	
+
+var l=[l1,l2]
 var sg=[]
 l.forEach(i=>{
     var ls=[]
@@ -49,22 +68,29 @@ l.forEach(i=>{
 	obj.forEach(o=>{
 		var li=document.createElement('li')
 		li.innerHTML=o.name
+		li.setAttribute('bf',0)
 		if(o.ch.length){
-			o.ch.forEach(ch=>{
+			o.ch.forEach((ch,i)=>{
 				var ad=document.createElement('audio')
 				var b=document.createElement('button')
 				b.innerHTML="O"
-				b.click=function(){ad.play()}
+				b.onclick=function(){
+					ad.play()
+					li.setAttribute('bf',i)
+				}
 				ad.src=ch
 				b.setAttribute('class','ch')
 				li.appendChild(ad)
 				li.appendChild(b)
 			})
-			o.ph.forEach(ch=>{
+			o.ph.forEach((ch,i)=>{
 				var ad=document.createElement('audio')
 				var b=document.createElement('button')
 				b.innerHTML="O"
-				b.click=function(){ad.play()}
+				b.onclick=function(){
+					ad.play()
+					li.setAttribute('bf',i)
+				}
 				ad.src=ch
 				b.setAttribute('class','ph')
 				li.appendChild(ad)
@@ -73,6 +99,9 @@ l.forEach(i=>{
 		}
 		ul.appendChild(li)
 	})
+	var bf=document.createElement('button')
+	bf.innerText="Play"
+	ul.append(bf)
 	document.body.appendChild(div)
 })
 /*sg.forEach((i,j)=>{
